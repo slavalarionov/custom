@@ -1,0 +1,343 @@
+query($id: ID) {
+    watchStrap(id: $id) {
+        data {
+            attributes {
+                watch_strap {
+                    id
+                    strap_name
+                    strap_title
+                    strap_description
+                    strap_full_description
+                    price
+                    preview_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    ultra_preview_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    leather_colors(pagination: { limit: 20 }) {
+                        color_name
+                        color_title
+                        color_code
+                        default_selected
+                        available
+                        view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    stitching_colors(pagination: { limit: 20 }) {
+                        color_name
+                        color_title
+                        color_code
+                        default_selected
+                        available
+                        view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    edge_colors(pagination: { limit: 20 }) {
+                        color_name
+                        color_title
+                        color_code
+                        default_selected
+                        available
+                        view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    buckle_colors(pagination: { limit: 20 }) {
+                        color_name
+                        color_title
+                        color_code
+                        default_selected
+                        available
+                        view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    adapter_colors(pagination: { limit: 20 }) {
+                        color_name
+                        color_title
+                        color_code
+                        default_selected
+                        available
+                        view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_1 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_2 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_view_3 {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        preview {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    strap_params {
+                        param_name
+                        param_title
+                        param_price
+                    }
+                    view_1 {
+                        main_image {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_main_image {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    view_2 {
+                        main_image {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_main_image {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    view_3 {
+                        main_image {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                        ultra_main_image {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                    final_view {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    has_buckle_butterfly
+                }
+            }
+        }
+    }
+}

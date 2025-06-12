@@ -1,0 +1,31 @@
+query {
+    watchStraps {
+        data {
+            attributes {
+                watch_strap {
+                    id
+                    strap_name
+                    strap_title
+                    strap_description
+                    strap_full_description
+                    price
+                    preview_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    ultra_preview_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    is_available
+                }
+            }
+        }
+    }
+}
