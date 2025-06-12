@@ -1,0 +1,13 @@
+query {
+    promoCode {
+        data {
+            attributes {
+                promo_codes(filters: { code: { eq: "sdsds" } }) {
+                    type
+                    discount
+                    code
+                }
+            }
+        }
+    }
+}

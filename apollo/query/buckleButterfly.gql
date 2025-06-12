@@ -1,0 +1,17 @@
+query {
+    buckleButterfly {
+        data {
+            attributes {
+                buckle_name
+                    buckle_price
+                    buckle_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                }
+            }
+        }
+    }
+}

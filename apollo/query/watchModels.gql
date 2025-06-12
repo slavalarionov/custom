@@ -1,0 +1,84 @@
+query {
+    watchModels {
+        data {
+            attributes {
+                watch_model {
+                    model_name
+                    watch_model_name
+                    watch_model_manufacturer
+                    main_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    watch_sizes {
+                        watch_size
+                    }
+                    watch_straps {
+                        data {
+                            attributes {
+                                watch_strap {
+                                    id
+                                    strap_name
+                                }
+                            }
+                        }
+                    }
+                    frame_colors {
+                        color_name
+                        color_title
+                        color_code
+                        watch_model_color {
+                            data {
+                                attributes {
+                                    color_name
+                                    watch_models_straps_colors {
+                                        strap_name
+                                        view_1 {
+                                            data {
+                                                attributes {
+                                                    url
+                                                }
+                                            }
+                                        }
+                                        view_2 {
+                                            data {
+                                                attributes {
+                                                    url
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    is_available
+                }
+            }
+        }
+    }
+    additionalOption {
+        data {
+            attributes {
+                title
+                description
+                additional_options {
+                    option_name
+                    option_title
+                    option_price
+                    choosen
+                    option_image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

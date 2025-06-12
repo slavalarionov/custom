@@ -1,0 +1,14 @@
+:root {
+    font-family: 'TildaSans';
+    font-weight: 400;
+    color: $base-color;
+}
+body {
+    overflow-x: hidden;
+}
+.container {
+    width: calc(100% - 140px);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
