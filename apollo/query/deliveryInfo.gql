@@ -1,14 +1,14 @@
 query {
-  delivery {
-    data {
-      attributes {
-        delivery_mail_data {
-          label
-          price
-          delivery_time
+    delivery {
+        data {
+            attributes {
+                delivery_mail_data {
+                    label
+                    price
+                    delivery_time
+                }
+                closest_delivery_date
+            }
         }
-        closest_delivery_date
-      }
     }
-  }
 }
