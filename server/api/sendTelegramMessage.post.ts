@@ -1,12 +1,6 @@
 import axios from 'axios'
 import { optionsType } from '~/types/optionsType'
 
-/**
- * Sends a message to a Telegram chat using the Telegram Bot API.
- * @returns {Promise<void>} - A promise that resolves when the message is sent.
- * @param order
- */
-
 function createOrderMessage(order: optionsType): string {
     return `
 Order #${order.orderNumber}
@@ -41,34 +35,29 @@ Payment Amount: ${
     } руб.
 Payment system: ${order.paymentType}
 
-
 Purchaser information:
 Email: ${order.email}
 Телефон: ${order.tel}
 `.trim()
 }
 
-interface sendTelegramMessageParams {
-    msgContent: optionsType
-    telegramToken?: string
-    telegramChatId?: string
-}
-
-export default async function sendTelegramMessage(
-    params: sendTelegramMessageParams
-): Promise<void> {
-    const { msgContent, telegramToken, telegramChatId } = params
-    if (!telegramToken || !telegramChatId) {
-        return
+export default defineEventHandler(async (event) => {
+    const body = await readBody(event)
+    const config = useRuntimeConfig()
+    const { msgContent } = body
+    if (!config.public.TELEGRAM_BOT_TOKEN || !config.public.TELEGRAM_CHAT_ID) {
+        return { error: 'No telegram credentials' }
     }
-    const url = `https://api.telegram.org/bot${telegramToken}/sendMessage`
+    const url = `https://api.telegram.org/bot${config.public.TELEGRAM_BOT_TOKEN}/sendMessage`
     try {
         await axios.post(url, {
-            chat_id: telegramChatId,
+            chat_id: config.public.TELEGRAM_CHAT_ID,
             text: createOrderMessage(msgContent),
             parse_mode: 'HTML'
         })
+        return { success: true }
     } catch (error) {
         console.error('Ошибка отправки сообщения в Telegram:', error)
+        return { error: 'Ошибка отправки сообщения в Telegram' }
     }
-}
+})

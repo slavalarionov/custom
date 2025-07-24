@@ -8,7 +8,7 @@ import orderPopupInfo from './order-popup-info/index.vue'
 import orderPopupPaymentType from './order-popup-payment-type/index.vue'
 import fillFormData from './fillFormData'
 import { useConfiguratorStore } from '@/store/configuratorStore'
-import { ComputedRef, useNuxtApp, useRuntimeConfig } from '#imports'
+import { ComputedRef, useNuxtApp } from '#imports'
 import inputField from '@/components/UI/input-field.vue'
 import checkboxButton from '@/components/UI/checkbox-button.vue'
 import crossIcon from '@/components/icons/cross-icon.vue'
@@ -18,10 +18,8 @@ import sendEmailApi from '@/api/sendEmailApi'
 import type { deliveryListItemType } from '@/types/deliveryTypes'
 import type selectedDeliveryPoint from '@/types/selectedDeliveryPoint'
 import type deliveryAddressInfoType from '@/types/deliveryAddressInfo'
-import sendTelegramMessage from '~/api/sendTelegramMessage'
 import { optionsType } from '~/types/optionsType'
 
-const config = useRuntimeConfig()
 const configuratorStore = useConfiguratorStore()
 const { $lockScroll, $unlockScroll } = useNuxtApp()
 const popupVisible = computed(() => {
@@ -231,10 +229,11 @@ const onPay = async () => {
             paymentType: state.selectedTypeOfPayment
         }
         // Отправка заказа в Telegram и на почту если все заполнено корректно
-        await sendTelegramMessage({
-            msgContent: options,
-            telegramToken: config.public.TELEGRAM_BOT_TOKEN,
-            telegramChatId: config.public.TELEGRAM_CHAT_ID
+        await $fetch('/api/sendTelegramMessage', {
+            method: 'POST',
+            body: {
+                msgContent: options
+            }
         })
         const formData = fillFormData(options)
         await sendEmailApi(formData)
