@@ -25,7 +25,6 @@ const rules = {
 const v$ = useVuelidate(rules, state)
 const citiesSearchMenuItems: Ref<deliveryCitiesListType | null> = ref(null)
 const isLoading: Ref<boolean> = ref(false)
-const popupLoadedOnce: Ref<boolean> = ref(false)
 const initialDataLoaded: Ref<boolean> = ref(false)
 
 const searchHandler = (cityString: string) => {

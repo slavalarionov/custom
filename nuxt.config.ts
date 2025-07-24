@@ -62,6 +62,11 @@ export default defineNuxtConfig({
         public: {
             API_BASE_URL: process.env.STRAPI_URL || 'http://localhost:1337',
             SERVICE_PATH: process.env.SERVICE_PATH,
+            TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+            TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
+            TOCHKA_CUSTOMER_CODE: process.env.TOCHKA_CUSTOMER_CODE,
+            TOCHKA_MERCHANT_ID: process.env.TOCHKA_MERCHANT_ID,
+            TOCHKA_TOKEN: process.env.TOCHKA_TOKEN,
             BACKEND_BASE_ADDRESS: process.env.BACKEND_BASE_ADDRESS,
             YANDEX_API_KEY: process.env.YANDEX_API_KEY
         }

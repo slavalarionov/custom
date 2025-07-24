@@ -8,7 +8,7 @@ import orderPopupInfo from './order-popup-info/index.vue'
 import orderPopupPaymentType from './order-popup-payment-type/index.vue'
 import fillFormData from './fillFormData'
 import { useConfiguratorStore } from '@/store/configuratorStore'
-import { ComputedRef, useNuxtApp } from '#imports'
+import { ComputedRef, useNuxtApp, useRuntimeConfig } from '#imports'
 import inputField from '@/components/UI/input-field.vue'
 import checkboxButton from '@/components/UI/checkbox-button.vue'
 import crossIcon from '@/components/icons/cross-icon.vue'
@@ -18,6 +18,10 @@ import sendEmailApi from '@/api/sendEmailApi'
 import type { deliveryListItemType } from '@/types/deliveryTypes'
 import type selectedDeliveryPoint from '@/types/selectedDeliveryPoint'
 import type deliveryAddressInfoType from '@/types/deliveryAddressInfo'
+import sendTelegramMessage from '~/api/sendTelegramMessage'
+import { optionsType } from '~/types/optionsType'
+
+const config = useRuntimeConfig()
 const configuratorStore = useConfiguratorStore()
 const { $lockScroll, $unlockScroll } = useNuxtApp()
 const popupVisible = computed(() => {
@@ -179,7 +183,7 @@ const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
     if (isFormDataCorrect.value) {
-        const options = {
+        const options: optionsType = {
             orderNumber: generateOrderNumber(10),
             strapModel: strapStep.value.strapName || '',
             strapLeatherColor:
@@ -226,8 +230,14 @@ const onPay = async () => {
             totalPrice: configuratorStore.totalPriceWithDiscount,
             paymentType: state.selectedTypeOfPayment
         }
+        // Отправка заказа в Telegram и на почту если все заполнено корректно
+        await sendTelegramMessage({
+            msgContent: options,
+            telegramToken: config.public.TELEGRAM_BOT_TOKEN,
+            telegramChatId: config.public.TELEGRAM_CHAT_ID
+        })
         const formData = fillFormData(options)
-        sendEmailApi(formData)
+        await sendEmailApi(formData)
         if (totalPriceWithDiscount.value > 0) {
             if (state.selectedTypeOfPayment === 'Долями от Тинькофф') {
                 configuratorStore.dolyamePay({
@@ -235,7 +245,7 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                configuratorStore.cardPay()
+                await configuratorStore.cardPay()
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
