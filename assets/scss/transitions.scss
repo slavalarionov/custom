@@ -1,6 +1,6 @@
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .4s ease;
+    transition: opacity 0.4s ease;
 }
 .fade-enter-from,
 .fade-leave-to {
@@ -8,7 +8,7 @@
 }
 .fade-delay-enter-active,
 .fade-delay-leave-active {
-    transition: opacity .4s ease;
+    transition: opacity 0.4s ease;
 }
 .fade-delay-enter-from,
 .fade-delay-leave-to {
@@ -23,16 +23,22 @@
 .fade-static-enter-active,
 .fade-static-leave-active {
     position: absolute !important;
-    transition: opacity, transform, .4s ease;
+    transition:
+        opacity,
+        transform,
+        0.4s ease;
 }
 .fade-static-enter-from,
 .fade-static-leave-to {
     opacity: 0;
-    transform: scale(.85);
+    transform: scale(0.85);
 }
 .fade-right-enter-active,
 .fade-right-leave-active {
-    transition: opacity, transform, 0.3s ease;
+    transition:
+        opacity,
+        transform,
+        0.3s ease;
 }
 .fade-right-enter-from,
 .fade-right-leave-to {
@@ -40,10 +46,16 @@
     transform: translateX(50px);
 }
 .fade-left-enter-active {
-    transition: opacity, transform, 0.4s ease;
+    transition:
+        opacity,
+        transform,
+        0.4s ease;
 }
 .fade-left-leave-active {
-    transition: opacity, transform, 0.3s ease;
+    transition:
+        opacity,
+        transform,
+        0.3s ease;
 }
 .fade-left-enter-from,
 .fade-left-leave-to {
@@ -54,7 +66,10 @@
 .fade-up-leave-active {
     opacity: 1;
     transform: translate(0);
-    transition: opacity, transform, 0.4s ease;
+    transition:
+        opacity,
+        transform,
+        0.4s ease;
 }
 .fade-up-enter-from,
 .fade-up-leave-to {
@@ -69,7 +84,10 @@
 .fade-right-static-enter-active,
 .fade-right-static-leave-active {
     position: absolute !important;
-    transition: opacity, transform, .5s ease;
+    transition:
+        opacity,
+        transform,
+        0.5s ease;
 }
 .fade-left-static-enter-from,
 .fade-left-static-leave-to {
@@ -79,5 +97,8 @@
 .fade-left-static-enter-active,
 .fade-left-static-leave-active {
     position: absolute !important;
-    transition: opacity, transform, .5s ease;
+    transition:
+        opacity,
+        transform,
+        0.5s ease;
 }
