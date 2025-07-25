@@ -29,14 +29,14 @@ const telLengthValidate = (value: string) => {
     return value.replace(/[^0-9]/g, '').length === 11
 }
 const state = reactive({
-    email: '',
-    tel: '',
-    deliveryCity: '',
-    receiver: '',
-    mailAddress: '',
-    curierAddress: '',
-    deliveryComment: '',
-    deliveryPromoCode: '',
+    email: 'TEST',
+    tel: 'TEST',
+    deliveryCity: 'TEST',
+    receiver: 'TEST',
+    mailAddress: 'TEST',
+    curierAddress: 'TEST',
+    deliveryComment: 'TEST',
+    deliveryPromoCode: 'TEST',
     selectedTypeOfPayment: 'Банковской картой'
 })
 const rules = {
@@ -228,6 +228,13 @@ const onPay = async () => {
             totalPrice: configuratorStore.totalPriceWithDiscount,
             paymentType: state.selectedTypeOfPayment
         }
+        // Отправка заказа в RetailCRM
+        await $fetch('/api/retailcrm', {
+            method: 'POST',
+            body: {
+                orderData: options
+            }
+        })
         // Отправка заказа в Telegram и на почту если все заполнено корректно
         await $fetch('/api/sendTelegramMessage', {
             method: 'POST',
