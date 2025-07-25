@@ -18,6 +18,8 @@ import sendEmailApi from '@/api/sendEmailApi'
 import type { deliveryListItemType } from '@/types/deliveryTypes'
 import type selectedDeliveryPoint from '@/types/selectedDeliveryPoint'
 import type deliveryAddressInfoType from '@/types/deliveryAddressInfo'
+import { optionsType } from '~/types/optionsType'
+
 const configuratorStore = useConfiguratorStore()
 const { $lockScroll, $unlockScroll } = useNuxtApp()
 const popupVisible = computed(() => {
@@ -179,7 +181,7 @@ const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
     if (isFormDataCorrect.value) {
-        const options = {
+        const options: optionsType = {
             orderNumber: generateOrderNumber(10),
             strapModel: strapStep.value.strapName || '',
             strapLeatherColor:
@@ -226,8 +228,15 @@ const onPay = async () => {
             totalPrice: configuratorStore.totalPriceWithDiscount,
             paymentType: state.selectedTypeOfPayment
         }
+        // Отправка заказа в Telegram и на почту если все заполнено корректно
+        await $fetch('/api/sendTelegramMessage', {
+            method: 'POST',
+            body: {
+                msgContent: options
+            }
+        })
         const formData = fillFormData(options)
-        sendEmailApi(formData)
+        await sendEmailApi(formData)
         if (totalPriceWithDiscount.value > 0) {
             if (state.selectedTypeOfPayment === 'Долями от Тинькофф') {
                 configuratorStore.dolyamePay({
@@ -235,7 +244,7 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                configuratorStore.cardPay()
+                await configuratorStore.cardPay()
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
