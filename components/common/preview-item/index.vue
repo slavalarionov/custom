@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type ComputedRef, watch } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 import previewItemParam from './preview-item-param/index.vue'
 import { watchStrapDataType } from '@/types/watchStraps'
 import frameColorsType from '@/types/frameColors'

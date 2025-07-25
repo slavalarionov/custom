@@ -37,16 +37,13 @@ export default defineNuxtPlugin(() => {
             'ym'
         )
 
-        if (typeof window !== 'undefined' && typeof window.ym === 'function') {
-            window.ym(103476650, 'init', {
-                ssr: true,
-                webvisor: true,
-                clickmap: true,
-                ecommerce: 'dataLayer',
-                accurateTrackBounce: true,
-                trackLinks: true
-            })
-        }
+        window.ym?.(103476650, 'init', {
+            ssr: true,
+            webvisor: true,
+            clickmap: true,
+            ecommerce: 'dataLayer',
+            accurateTrackBounce: true,
+            trackLinks: true
+        })
     }
 })
-
