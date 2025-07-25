@@ -67,6 +67,8 @@ export default defineNuxtConfig({
             TOCHKA_CUSTOMER_CODE: process.env.TOCHKA_CUSTOMER_CODE,
             TOCHKA_MERCHANT_ID: process.env.TOCHKA_MERCHANT_ID,
             TOCHKA_TOKEN: process.env.TOCHKA_TOKEN,
+            RETAIL_CRM_API_URL: process.env.RETAIL_CRM_API_URL,
+            RETAIL_CRM_API_TOKEN: process.env.RETAIL_CRM_API_TOKEN,
             BACKEND_BASE_ADDRESS: process.env.BACKEND_BASE_ADDRESS,
             YANDEX_API_KEY: process.env.YANDEX_API_KEY
         }
