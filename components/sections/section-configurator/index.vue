@@ -89,6 +89,9 @@ watch(
     font-weight: 300;
     font-size: 48px;
     color: #333;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 @media (max-width: 1500px) {
     .configuratorTitle {

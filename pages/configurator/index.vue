@@ -2,16 +2,6 @@
 import { onMounted } from 'vue'
 import deliveryInfoApi from '@/api/deliveryInfoApi'
 import { useConfiguratorStore } from '@/store/configuratorStore'
-const breadcrumbs = [
-    {
-        path: '/',
-        value: 'Главная'
-    },
-    {
-        path: '/configurator',
-        value: 'Конфигуратор'
-    }
-]
 const configuratorStore = useConfiguratorStore()
 const router = useRouter()
 const configuratorStepsArr = computed(() => {
@@ -97,7 +87,6 @@ onMounted(async () => {
 
 <template>
     <div :class="s.page">
-        <app-breadcrumbs :class="s.breadcrumbs" :list="breadcrumbs" />
         <transition name="fade">
             <section-configurator />
         </transition>
@@ -108,10 +97,5 @@ onMounted(async () => {
 .page {
     position: relative;
     min-height: 100vh;
-}
-@media (max-width: 750px) {
-    .breadcrumbs {
-        display: none;
-    }
 }
 </style>

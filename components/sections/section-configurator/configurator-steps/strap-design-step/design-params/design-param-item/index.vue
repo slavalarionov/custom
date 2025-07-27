@@ -275,7 +275,7 @@ onMounted(() => {
     cursor: pointer;
     transition: $base-transition;
     &.choosen {
-        border-color: #01416d;
+        border-color: #4e68f2;
         background: #fff;
     }
     &.adapterParamOption {
@@ -303,7 +303,7 @@ onMounted(() => {
             transition: $base-transition;
         }
         &.choosen .paramOptionPreviewImgInner {
-            border-color: #01416d;
+            border-color: #4e68f2;
         }
     }
     &ColorPreview {
