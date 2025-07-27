@@ -56,7 +56,7 @@ const nextStepReady = computed(() => {
             :active="currentStepNum === stepsAmount"
             @click="configuratorStore.showOrderPopup"
         >
-            Оплатить
+            Перейти к оформлению
         </primary-btn>
     </div>
 </template>
