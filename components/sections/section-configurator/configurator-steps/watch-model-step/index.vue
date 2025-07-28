@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import configuratorFrameColors from './configurator-frame-colors/index.vue'
-import type watchModelsType from 'types/watchModels'
+import type watchModelsType from '@/types/watchModels'
 import type frameColorsType from '@/types/frameColors'
 const props = defineProps<{
     watchModels: watchModelsType | null

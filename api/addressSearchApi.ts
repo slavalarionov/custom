@@ -1,5 +1,5 @@
 import { useRuntimeConfig } from 'nuxt/app'
-import type addressListType from 'types/address'
+import type addressListType from '@/types/address'
 type responseType = addressListType
 
 export default async function (query: string, cityName: string = '') {

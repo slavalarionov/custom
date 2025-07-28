@@ -9,8 +9,8 @@ import {
 import { useRoute } from 'vue-router'
 import designStepPreview from './design-preview/index.vue'
 import designStepParams from './design-params/index.vue'
-import type { singleWatchModelType } from 'types/watchModels'
-import type { singleWatchStrap, strapParamsType } from 'types/watchStraps'
+import type { singleWatchModelType } from '@/types/watchModels'
+import type { singleWatchStrap, strapParamsType } from '@/types/watchStraps'
 const props = defineProps<{
     selectedWatchModel: singleWatchModelType
     selectedStrapModel: singleWatchStrap

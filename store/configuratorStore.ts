@@ -8,17 +8,17 @@ import watchStrapParamsApi from '@/api/watchStrapParamsApi'
 import dolyameCreateApi from '@/api/dolyameCreateApi'
 import type additionalOptionType from '@/types/additionalOption'
 import type { additionalOptionsType } from '@/types/additionalOption'
-import type watchModelsType from 'types/watchModels'
-import type { singleWatchModelType } from 'types/watchModels'
-import type watchModelSizesType from 'types/watchModelSizes'
-import type frameColorsType from 'types/frameColors'
-import type configuratorSteps from 'types/configuratorSteps'
-import type watchStrapsType from 'types/watchStraps'
+import type watchModelsType from '@/types/watchModels'
+import type { singleWatchModelType } from '@/types/watchModels'
+import type watchModelSizesType from '@/types/watchModelSizes'
+import type frameColorsType from '@/types/frameColors'
+import type configuratorSteps from '@/types/configuratorSteps'
+import type watchStrapsType from '@/types/watchStraps'
 import type {
     singleWatchStrap,
     strapParamsType,
     strapColorParam
-} from 'types/watchStraps'
+} from '@/types/watchStraps'
 import type finalImagesListType from '@/types/finalImages'
 type promoType = {
     promoFound: boolean

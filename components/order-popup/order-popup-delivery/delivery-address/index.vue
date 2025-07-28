@@ -3,7 +3,7 @@ import { ref, type Ref, reactive } from 'vue'
 import streetSearchField from './street-search-field/index.vue'
 import buildingSearchField from './building-search-field/index.vue'
 import inputField from '@/components/UI/input-field.vue'
-import type { addressListItemType } from 'types/address'
+import type { addressListItemType } from '@/types/address'
 const props = defineProps<{
     cityName: string
     needValidate: boolean

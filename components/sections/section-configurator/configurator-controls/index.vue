@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import configuratorParams from './configurator-params/index.vue'
 import configuratorNavigation from './configurator-navigation/index.vue'
-import { singleWatchModelType } from 'types/watchModels'
+import { singleWatchModelType } from '@/types/watchModels'
 const props = defineProps<{
     selectedWatchModel: singleWatchModelType | null
     currentStepNum: number
