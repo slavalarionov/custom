@@ -15,7 +15,7 @@ type deliveryValuesEnumsType =
     | 'gift-certificate'
     | 'city-courier-delivery'
     | 'self-pickup'
-type deliveryListItemType = {
+export type deliveryListItemType = {
     deliveryType: deliveryEnumsType
     deliveryTime?: string
     deliveryPrice?: number
