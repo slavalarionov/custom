@@ -1,5 +1,5 @@
 // import { cloneDeep } from 'lodash'
-import watchStrapsType from ',./types/watchStraps'
+import watchStrapsType from '../types/watchStraps'
 import watchModelsType from '../types/watchModels'
 import watchModelSizesType from '../types/watchModelSizes'
 import frameColorsType from '../types/frameColors'
