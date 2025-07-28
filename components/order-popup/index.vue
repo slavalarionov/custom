@@ -29,14 +29,14 @@ const telLengthValidate = (value: string) => {
     return value.replace(/[^0-9]/g, '').length === 11
 }
 const state = reactive({
-    email: 'TEST',
-    tel: 'TEST',
-    deliveryCity: 'TEST',
-    receiver: 'TEST',
-    mailAddress: 'TEST',
-    curierAddress: 'TEST',
-    deliveryComment: 'TEST',
-    deliveryPromoCode: 'TEST',
+    email: '',
+    tel: '',
+    deliveryCity: '',
+    receiver: '',
+    mailAddress: '',
+    curierAddress: '',
+    deliveryComment: '',
+    deliveryPromoCode: '',
     selectedTypeOfPayment: 'Банковской картой'
 })
 const rules = {
