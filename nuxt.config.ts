@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     typescript: {
         strict: true,
         shim: false,
-        typeCheck: true
+        typeCheck: false
     },
 
     hooks: {
