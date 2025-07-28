@@ -1,12 +1,11 @@
 // import { cloneDeep } from 'lodash'
-import cloneDeep from 'lodash/fp/cloneDeep.js'
-import watchStrapsType from '@/types/watchStraps'
-import watchModelsType from 'types/watchModels'
-import watchModelSizesType from 'types/watchModelSizes'
-import frameColorsType from 'types/frameColors'
-import watchAngles from 'types/watchAngles'
+import watchStrapsType from ',./types/watchStraps'
+import watchModelsType from '../types/watchModels'
+import watchModelSizesType from '../types/watchModelSizes'
+import frameColorsType from '../types/frameColors'
+import watchAngles from '../types/watchAngles'
 
-import additionalOptionType from '@/types/additionalOption'
+import additionalOptionType from '../types/additionalOption'
 import watchModelsQuery from '@/apollo/query/watchModels.gql'
 interface watchModels {
     data: {
