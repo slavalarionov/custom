@@ -1,63 +1,61 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { optimizeLodashImports } from '@optimize-lodash/rollup-plugin'
-import { config } from 'dotenv'
+import {optimizeLodashImports} from '@optimize-lodash/rollup-plugin'
+import {config} from 'dotenv'
+import {defineNuxtConfig} from 'nuxt/config'
 
-const isDev: boolean = process.env.NODE_ENV === 'development'
-const envFilename: string = isDev ? '.env.dev' : '.env.prod'
-config({ path: envFilename })
+const isDev = process.env.NODE_ENV === 'development'
+config({path: isDev ? '.env.dev' : '.env.prod'})
+
 export default defineNuxtConfig({
+    typescript: {
+        strict: true,
+        shim: false,
+        typeCheck: true
+    },
+
     hooks: {
-        'vite:extendConfig': (config) => {
-            config?.plugins?.push(optimizeLodashImports())
+        'vite:extendConfig'(viteConfig) {
+            viteConfig.plugins = viteConfig.plugins || []
+            viteConfig.plugins.push(optimizeLodashImports())
         }
     },
+
     modules: [
-        [
-            '@pinia/nuxt',
-            {
-                autoImports: ['defineStore']
-            }
-        ],
+        '@pinia/nuxt',
         '@nuxtjs/apollo',
         '@nuxtjs/strapi',
-        '@nuxtjs/eslint-module'
-    ],
+        process.env.NODE_ENV === 'development' ? '@nuxtjs/eslint-module' : null
+    ].filter(Boolean),
+
     strapi: {
-        // Options
         url: process.env.STRAPI_URL || 'http://localhost:1337'
     },
+
     apollo: {
         clients: {
             default: {
-                httpEndpoint:
-                    process.env.STRAPI_URL + '/graphql' ||
-                    'http://localhost:1337/graphql'
+                httpEndpoint: `${process.env.STRAPI_URL || 'http://localhost:1337'}/graphql`
             }
         }
     },
-    components: [
-        {
-            path: '~/components', // will get any components nested in let's say /components/test too
-            pathPrefix: false
-        }
-    ],
-    eslint: {
-        lintOnStart: false
+
+    components: {
+        global: true,
+        dirs: ['~/components']
     },
+
     css: ['~/assets/scss/main.scss'],
+
     vite: {
         css: {
             preprocessorOptions: {
                 scss: {
                     additionalData: '@use "@/assets/scss/_variables.scss" as *;'
                 }
-            },
-            modules: {
-                generateScopedName: '[hash:base64:8]'
             }
-        },
-        plugins: []
+        }
     },
+
     runtimeConfig: {
         public: {
             API_BASE_URL: process.env.STRAPI_URL || 'http://localhost:1337',
@@ -73,13 +71,28 @@ export default defineNuxtConfig({
             YANDEX_API_KEY: process.env.YANDEX_API_KEY
         }
     },
+
     imports: {
-        dirs: ['store']
+        dirs: ['store'],
+        presets: [
+            {
+                from: 'vue',
+                imports: [
+                    'ComputedRef',
+                    'Ref',
+                    'computed',
+                    'watch',
+                    'reactive'
+                ]
+            }
+        ]
     },
+
     build: {
-        // transpile: ['nuxt-vue-select']
+        transpile: []
     },
-    experimental: {
-        inlineSSRStyles: false
+
+    ssr: {
+        noExternal: true
     }
 })
