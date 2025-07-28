@@ -1,12 +1,6 @@
-//@import '_variables.scss';
-//@import 'fonts.scss';
-//@import 'reset.scss';
-//@import 'global.scss';
-//@import 'transitions.scss';
-//@import 'responsive.scss';
-
-@use "_variables.scss" as *;
-@use 'fonts.scss';
-@use 'reset.scss';
-@use 'global.scss';
-@use 'transitions.scss';
+@import '_variables.scss';
+@import 'fonts.scss';
+@import 'reset.scss';
+@import 'global.scss';
+@import 'transitions.scss';
+@import 'responsive.scss';
