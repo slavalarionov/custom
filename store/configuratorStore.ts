@@ -1,4 +1,3 @@
-import axios from 'axios'
 import buckleButterflyType from '@/types/buckleButterfly'
 import { useRuntimeConfig } from '#imports'
 import watchModelsApi from '@/api/watchModelsApi'
@@ -209,60 +208,37 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        async cardPay(): Promise<void> {
-            try {
-                const response = await axios.post('/api/createOrder', {
-                    amount: String(this.totalPriceWithDiscount),
-                    purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
-                    paymentMode: ['sbp', 'card', 'tinkoff'],
-                    redirectUrl: 'https://slavalarionov.com/success'
-                })
-                // Упрощённая проверка ссылки
-                const link =
-                    typeof response.data?.data?.Data?.paymentLink === 'string'
-                        ? response.data.data.Data.paymentLink
-                        : undefined
-
-                if (link) {
-                    window.open(link, '_blank')
-                    this.closeOrderPopup()
-                } else {
-                    let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
-                    if (!response.data.success) {
-                        if (
-                            'message' in response.data &&
-                            response.data.message
-                        ) {
-                            errorMessage =
-                                'Ошибка оплаты: ' + response.data.message
-                        } else if (
-                            'data' in response.data &&
-                            response.data.data
-                        ) {
-                            const errorData = response.data.data as any
-                            if (typeof errorData === 'string') {
-                                errorMessage = 'Ошибка оплаты: ' + errorData
-                            } else if (errorData.error) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' + errorData.error
-                            } else if (errorData.message) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' + errorData.message
-                            } else if (errorData.errors) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' +
-                                    JSON.stringify(errorData.errors)
-                            }
-                        }
-                    }
-                    alert(errorMessage)
+        cardPay() {
+            const widget = new cp.CloudPayments()
+            widget.pay(
+                'charge', // или 'charge'
+                {
+                    // options
+                    publicId: 'pk_b40386c631341a63812676ab67bb0', // id из личного кабинета
+                    description: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`, // назначение
+                    amount: this.totalPriceWithDiscount, // сумма
+                    currency: 'RUB', // валюта
+                    skin: 'mini', // дизайн виджета (необязательно),
+                    email: this.steps.final.email,
+                    configuration: {
+                        common: {}
+                    },
+                    requireEmail: true
+                },
+                {
+                    onSuccess: function () {
+                        window.open(
+                            'https://slavalarionov.com/success',
+                            '_blank'
+                        )
+                        this.closeOrderPopup()
+                    },
+                    onFail: function () {
+                        window.open('https://slavalarionov.com/oh-no', '_blank')
+                    },
+                    onComplete: function () {}
                 }
-            } catch (e) {
-                alert(
-                    'Ошибка оплаты: ' +
-                        (e instanceof Error ? e.message : 'Что-то пошло не так')
-                )
-            }
+            )
         },
         dolyamePay(deliveryOptions: {
             deliveryType: string
