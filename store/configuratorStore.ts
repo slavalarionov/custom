@@ -20,6 +20,7 @@ import type {
     strapColorParam
 } from '@/types/watchStraps'
 import type finalImagesListType from '@/types/finalImages'
+import { defineStore } from 'pinia'
 type promoType = {
     promoFound: boolean
     type: 'percent' | 'ruble'
