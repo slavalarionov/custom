@@ -211,7 +211,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
         },
         async cardPay(): Promise<void> {
             try {
-                const response = await axios.post('/api/createOrder', {
+                const response = await axios.post('/api/createOrder.php', {
                     amount: String(this.totalPriceWithDiscount),
                     purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
                     paymentMode: ['sbp', 'card', 'tinkoff'],

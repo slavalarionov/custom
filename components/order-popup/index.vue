@@ -250,14 +250,14 @@ const onPay = async () => {
       paymentType: state.selectedTypeOfPayment
     }
 
-    await $fetch('/api/retailcrm', {
+    await $fetch('/api/retailcrm.php', {
       method: 'POST',
       body: {
         orderData: options
       }
     })
 
-    await $fetch('/api/sendTelegramMessage', {
+    await $fetch('/api/sendTelegramMessage.php', {
       method: 'POST',
       body: {
         msgContent: options
