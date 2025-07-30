@@ -18,6 +18,7 @@ import type { selectedDeliveryPoint } from '@/types/selectedDeliveryPoint'
 import type { deliveryAddressInfoType } from '@/types/deliveryAddressInfo'
 import type { optionsType } from '~/types/optionsType'
 import type deliveryStateType from './deliveryState'
+import { useRuntimeConfig } from '#app'
 
 const configuratorStore = useConfiguratorStore()
 const { $lockScroll, $unlockScroll } = useNuxtApp()
@@ -250,14 +251,16 @@ const onPay = async () => {
       paymentType: state.selectedTypeOfPayment
     }
 
-    await $fetch('/api/retailcrm.php', {
+    const config = useRuntimeConfig()
+
+    await $fetch(`${config.public.BACKEND_BASE_ADDRESS}retailcrm.php`, {
       method: 'POST',
       body: {
         orderData: options
       }
     })
 
-    await $fetch('/api/sendTelegramMessage.php', {
+    await $fetch(`${config.public.BACKEND_BASE_ADDRESS}sendTelegramMessage.php`, {
       method: 'POST',
       body: {
         msgContent: options
