@@ -17,6 +17,28 @@ pnpm install
 yarn install
 ```
 
+## Environment variables
+
+Create `.env.dev` for development and `.env.prod` for builds. Use the provided
+`.env.example` as a starting point:
+
+```bash
+cp .env.example .env.dev
+cp .env.example .env.prod
+```
+
+By default Nuxt expects Strapi to run locally at `http://localhost:1337`.
+To connect to the production Strapi instance set `STRAPI_URL` in your
+`.env.dev` or `.env.prod`:
+
+```bash
+echo "STRAPI_URL=https://api.slavalarionov.store" >> .env.dev
+echo "STRAPI_URL=https://api.slavalarionov.store" >> .env.prod
+```
+
+`BACKEND_BASE_ADDRESS` controls the address for the PHP backend and usually
+points to your local server, e.g. `http://localhost/`.
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
