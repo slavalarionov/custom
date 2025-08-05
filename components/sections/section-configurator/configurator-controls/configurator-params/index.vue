@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { singleWatchModelType } from '@/types/watchModels'
+import { singleWatchModelType } from 'types/watchModels'
 const props = defineProps<{
     selectedWatchModel: singleWatchModelType | null
     currentStepNum: number

@@ -1,6 +1,6 @@
 import { useRuntimeConfig } from 'nuxt/app'
-// import type addressListType from '@/types/address'
-import type deliveryCitiesListType from '@/types/deliveryCities'
+// import type addressListType from 'types/address'
+import type deliveryCitiesListType from 'types/deliveryCities'
 
 export default async function (cityName: string = '') {
     const config = useRuntimeConfig()

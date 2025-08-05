@@ -1,4 +1,3 @@
-import axios from 'axios'
 import buckleButterflyType from '@/types/buckleButterfly'
 import { useRuntimeConfig } from '#imports'
 import watchModelsApi from '@/api/watchModelsApi'
@@ -6,21 +5,21 @@ import watchStrapsApi from '@/api/watchStrapsApi'
 import buckleButterflyApi from '@/api/buckleButterflyApi'
 import watchStrapParamsApi from '@/api/watchStrapParamsApi'
 import dolyameCreateApi from '@/api/dolyameCreateApi'
+import createOrderApi from '@/api/createOrderApi'
 import type additionalOptionType from '@/types/additionalOption'
 import type { additionalOptionsType } from '@/types/additionalOption'
-import type watchModelsType from '@/types/watchModels'
-import type { singleWatchModelType } from '@/types/watchModels'
-import type watchModelSizesType from '@/types/watchModelSizes'
-import type frameColorsType from '@/types/frameColors'
-import type configuratorSteps from '@/types/configuratorSteps'
-import type watchStrapsType from '@/types/watchStraps'
+import type watchModelsType from 'types/watchModels'
+import type { singleWatchModelType } from 'types/watchModels'
+import type watchModelSizesType from 'types/watchModelSizes'
+import type frameColorsType from 'types/frameColors'
+import type configuratorSteps from 'types/configuratorSteps'
+import type watchStrapsType from 'types/watchStraps'
 import type {
     singleWatchStrap,
     strapParamsType,
     strapColorParam
-} from '@/types/watchStraps'
+} from 'types/watchStraps'
 import type finalImagesListType from '@/types/finalImages'
-import { defineStore } from 'pinia'
 type promoType = {
     promoFound: boolean
     type: 'percent' | 'ruble'
@@ -212,7 +211,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
         },
         async cardPay(): Promise<void> {
             try {
-                const response = await axios.post('/api/createOrder.php', {
+                const config = useRuntimeConfig()
+                const response = await createOrderApi(config, {
                     amount: String(this.totalPriceWithDiscount),
                     purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
                     paymentMode: ['sbp', 'card', 'tinkoff'],
@@ -220,8 +220,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 })
                 // Упрощённая проверка ссылки
                 const link =
-                    typeof response.data?.data?.Data?.paymentLink === 'string'
-                        ? response.data.data.Data.paymentLink
+                    typeof response?.data?.Data?.paymentLink === 'string'
+                        ? response.data.Data.paymentLink
                         : undefined
 
                 if (link) {
@@ -229,30 +229,19 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     this.closeOrderPopup()
                 } else {
                     let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
-                    if (!response.data.success) {
-                        if (
-                            'message' in response.data &&
-                            response.data.message
-                        ) {
-                            errorMessage =
-                                'Ошибка оплаты: ' + response.data.message
-                        } else if (
-                            'data' in response.data &&
-                            response.data.data
-                        ) {
-                            const errorData = response.data.data as any
+                    if (!response?.success) {
+                        if ('message' in response && response.message) {
+                            errorMessage = 'Ошибка оплаты: ' + response.message
+                        } else if ('data' in response && response.data) {
+                            const errorData = response.data as any
                             if (typeof errorData === 'string') {
                                 errorMessage = 'Ошибка оплаты: ' + errorData
                             } else if (errorData.error) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' + errorData.error
+                                errorMessage = 'Ошибка оплаты: ' + errorData.error
                             } else if (errorData.message) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' + errorData.message
+                                errorMessage = 'Ошибка оплаты: ' + errorData.message
                             } else if (errorData.errors) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' +
-                                    JSON.stringify(errorData.errors)
+                                errorMessage = 'Ошибка оплаты: ' + JSON.stringify(errorData.errors)
                             }
                         }
                     }
@@ -261,7 +250,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             } catch (e) {
                 alert(
                     'Ошибка оплаты: ' +
-                        (e instanceof Error ? e.message : 'Что-то пошло не так')
+                    (e instanceof Error ? e.message : 'Что-то пошло не так')
                 )
             }
         },

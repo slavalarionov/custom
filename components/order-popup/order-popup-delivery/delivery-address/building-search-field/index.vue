@@ -4,8 +4,8 @@ import { useVuelidate } from '@vuelidate/core'
 import { requiredIf } from '@vuelidate/validators'
 import searchField from '@/components/core/search-field/index.vue'
 import buildingSearchApi from '@/api/buildingSearchApi'
-import type { addressListType } from '@/types/address'
-import type { addressListItemType } from '@/types/address'
+import addressListType from 'types/address'
+import type { addressListItemType } from 'types/address'
 
 const props = defineProps<{
     streetFiasId: string | null

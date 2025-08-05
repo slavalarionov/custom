@@ -1,4 +1,4 @@
-query ($id: ID) {
+query($id: ID) {
     watchStrap(id: $id) {
         data {
             attributes {
