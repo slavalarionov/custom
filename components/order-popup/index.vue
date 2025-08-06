@@ -234,9 +234,9 @@ const onPay = async () => {
         const config = useRuntimeConfig()
 
         await sendRetailCrmApi(config, options)
+        await sendTelegramMessageApi(config, options)
         const formData = fillFormData(options)
         sendEmailApi(formData)
-        sendTelegramMessageApi(formData)
         if (totalPriceWithDiscount.value > 0) {
             if (state.selectedTypeOfPayment === 'Долями от Тинькофф') {
                 configuratorStore.dolyamePay({
