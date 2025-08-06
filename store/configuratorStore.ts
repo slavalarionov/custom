@@ -209,8 +209,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        async cardPay(): Promise<void> {
-            const popupWindow = window.open() // Открываем окно сразу
+        async cardPay(popupWindow: Window | null): Promise<void> {
             try {
                 const config = useRuntimeConfig()
                 const response = await createOrderApi(config, {
@@ -221,7 +220,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 })
                 const link = response?.data?.Data?.paymentLink
                 if (link && popupWindow) {
-                    popupWindow.location = link // Перенаправляем
+                    popupWindow.location = link
                     this.closeOrderPopup()
                 } else if (popupWindow) {
                     popupWindow.location = 'https://slavalarionov.com/oh-no'

@@ -177,6 +177,12 @@ function generateOrderNumber(length: number) {
     configuratorStore.orderNumber = res
     return res
 }
+
+function onPayClick() {
+    const popupWindow = window.open();
+    configuratorStore.cardPay(popupWindow);
+}
+
 const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
