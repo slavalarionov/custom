@@ -214,7 +214,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 const config = useRuntimeConfig();
                 const response = await createOrderApi(config, {
                     amount: String(this.totalPriceWithDiscount),
-                    purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
+                    purpose: `Заказ ремешка ${this.steps.strap.strapName ?? ''} для модели ${this.steps.model.modelName ?? ''}`,
                     paymentMode: ['sbp', 'card', 'tinkoff'],
                     redirectUrl: 'https://slavalarionov.com/success'
                 });

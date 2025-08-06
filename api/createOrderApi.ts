@@ -1,4 +1,3 @@
-// api/createOrderApi.ts
 export interface CreateOrderResponse {
     success?: boolean
     data?: {

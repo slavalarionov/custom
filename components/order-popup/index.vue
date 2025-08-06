@@ -187,6 +187,7 @@ const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
     if (isFormDataCorrect.value) {
+
         const options = {
             orderNumber: generateOrderNumber(10),
             strapModel: strapStep.value.strapName || '',
@@ -239,9 +240,9 @@ const onPay = async () => {
 
         await sendRetailCrmApi(config, options)
         await sendTelegramMessageApi(config, options)
-
         const formData = fillFormData(options)
         sendEmailApi(formData)
+
         if (totalPriceWithDiscount.value > 0) {
             if (state.selectedTypeOfPayment === 'Долями от Тинькофф') {
                 configuratorStore.dolyamePay({
@@ -249,9 +250,14 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                if (isFormDataCorrect.value) {
-                    const popupWindow = window.open();
-                    configuratorStore.cardPay(popupWindow);
+                // Открываем окно сразу по клику
+                const popupWindow = window.open('about:blank');
+                try {
+                    await configuratorStore.cardPay(popupWindow);
+                } catch {
+                    if (popupWindow) {
+                        popupWindow.location = 'https://slavalarionov.com/oh-no';
+                    }
                 }
             }
         } else {
