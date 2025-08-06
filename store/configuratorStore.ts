@@ -228,7 +228,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     this.closeOrderPopup()
                 } else {
                     let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
-                    if (!response?.success) {
+                    if (response?.success === false) {
                         if (
                             response &&
                             typeof response === 'object' &&
