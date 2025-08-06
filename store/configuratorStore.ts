@@ -220,37 +220,16 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 })
 
                 const link = response?.data?.Data?.paymentLink
-                        ? response.data.Data.paymentLink
-                        : undefined
-
                 if (link) {
                     window.open(link, '_blank')
                     this.closeOrderPopup()
                 } else {
                     let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
-                    if (response?.success === false) {
-                        if (
-                            response &&
-                            typeof response === 'object' &&
-                            !Array.isArray(response) &&
-                            'message' in response &&
-                            response.message
-                        ) {
+                    if (response && typeof response === 'object' && response.success === false) {
+                        if ('message' in response && response.message) {
                             errorMessage = 'Ошибка оплаты: ' + response.message
-                        } else if ('data' in response && response.data) {
-                            const errorData = response.data as any
-                            if (typeof errorData === 'string') {
-                                errorMessage = 'Ошибка оплаты: ' + errorData
-                            } else if (errorData.error) {
-                                errorMessage = 'Ошибка оплаты: ' + errorData.error
-                            } else if (errorData.message) {
-                                errorMessage = 'Ошибка оплаты: ' + errorData.message
-                            } else if (errorData.errors) {
-                                errorMessage = 'Ошибка оплаты: ' + JSON.stringify(errorData.errors)
-                            }
                         }
                     }
-                    alert(errorMessage)
                 }
             } catch (e) {
                 alert(
