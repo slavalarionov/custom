@@ -261,10 +261,8 @@ const onPay = async () => {
                 getPaymentLink().then((link) => {
                     if (link) {
                         console.log('Ссылка на оплату:', link)
-                        window.open(link, '_self')
                     } else {
                         console.log('Ошибка получения ссылки')
-                        window.open('https://slavalarionov.com/oh-no', 'self')
                     }
                 })
             }
