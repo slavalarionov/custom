@@ -211,23 +211,23 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
         },
         async cardPay(popupWindow: Window | null): Promise<void> {
             try {
-                const config = useRuntimeConfig()
+                const config = useRuntimeConfig();
                 const response = await createOrderApi(config, {
                     amount: String(this.totalPriceWithDiscount),
                     purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
                     paymentMode: ['sbp', 'card', 'tinkoff'],
                     redirectUrl: 'https://slavalarionov.com/success'
                 })
-                const link = response?.data?.Data?.paymentLink
+                const link = response?.data?.Data?.paymentLink;
                 if (link && popupWindow) {
-                    popupWindow.location = link
-                    this.closeOrderPopup()
+                    popupWindow.location = link;
+                    this.closeOrderPopup();
                 } else if (popupWindow) {
-                    popupWindow.location = 'https://slavalarionov.com/oh-no'
+                    popupWindow.location = 'https://slavalarionov.com/oh-no';
                 }
             } catch (e) {
                 if (popupWindow) {
-                    popupWindow.location = 'https://slavalarionov.com/oh-no'
+                    popupWindow.location = 'https://slavalarionov.com/oh-no';
                 }
             }
         },

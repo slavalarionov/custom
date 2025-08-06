@@ -249,7 +249,10 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                configuratorStore.cardPay()
+                if (isFormDataCorrect.value) {
+                    const popupWindow = window.open();
+                    configuratorStore.cardPay(popupWindow);
+                }
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
