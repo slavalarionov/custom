@@ -5,7 +5,6 @@ import watchStrapsApi from '@/api/watchStrapsApi'
 import buckleButterflyApi from '@/api/buckleButterflyApi'
 import watchStrapParamsApi from '@/api/watchStrapParamsApi'
 import dolyameCreateApi from '@/api/dolyameCreateApi'
-import createOrderApi from '@/api/createOrderApi'
 import type additionalOptionType from '@/types/additionalOption'
 import type { additionalOptionsType } from '@/types/additionalOption'
 import type watchModelsType from 'types/watchModels'
@@ -209,28 +208,38 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        // async cardPay(popupWindow: Window | null): Promise<void> {
-        //     try {
-        //         const config = useRuntimeConfig();
-        //         const response = await createOrderApi(config, {
-        //             amount: String(this.totalPriceWithDiscount),
-        //             purpose: `Заказ ремешка ${this.steps.strap.strapName ?? ''} для модели ${this.steps.model.modelName ?? ''}`,
-        //             paymentMode: ['sbp', 'card', 'tinkoff'],
-        //             redirectUrl: 'https://slavalarionov.com/success'
-        //         });
-        //         const link = response?.data?.Data?.paymentLink;
-        //         if (link && popupWindow) {
-        //             popupWindow.location = link;
-        //             this.closeOrderPopup();
-        //         } else if (popupWindow) {
-        //             popupWindow.location = 'https://slavalarionov.com/oh-no';
-        //         }
-        //     } catch (e) {
-        //         if (popupWindow) {
-        //             popupWindow.location = 'https://slavalarionov.com/oh-no';
-        //         }
-        //     }
-        // },
+        cardPay() {
+            const widget = new cp.CloudPayments()
+            widget.pay(
+                'charge', // или 'charge'
+                {
+                    // options
+                    publicId: 'pk_b40386c631341a63812676ab67bb0', // id из личного кабинета
+                    description: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`, // назначение
+                    amount: this.totalPriceWithDiscount, // сумма
+                    currency: 'RUB', // валюта
+                    skin: 'mini', // дизайн виджета (необязательно),
+                    email: this.steps.final.email,
+                    configuration: {
+                        common: {}
+                    },
+                    requireEmail: true
+                },
+                {
+                    onSuccess: function () {
+                        window.open(
+                            'https://slavalarionov.com/success',
+                            '_blank'
+                        )
+                        this.closeOrderPopup()
+                    },
+                    onFail: function () {
+                        window.open('https://slavalarionov.com/oh-no', '_blank')
+                    },
+                    onComplete: function () {}
+                }
+            )
+        },
         dolyamePay(deliveryOptions: {
             deliveryType: string
             deliveryPrice: number
