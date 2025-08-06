@@ -218,8 +218,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     paymentMode: ['sbp', 'card', 'tinkoff'],
                     redirectUrl: 'https://slavalarionov.com/success'
                 })
-                const link =
-                    typeof response?.data?.Data?.paymentLink === 'string'
+
+                const link = response?.data?.Data?.paymentLink
                         ? response.data.Data.paymentLink
                         : undefined
 
