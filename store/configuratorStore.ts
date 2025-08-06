@@ -210,6 +210,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             }
         },
         async cardPay(): Promise<void> {
+            const popupWindow = window.open() // Открываем окно сразу по клику
             try {
                 const config = useRuntimeConfig()
                 const response = await createOrderApi(config, {
@@ -220,8 +221,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 })
 
                 const link = response?.data?.Data?.paymentLink
-                if (link) {
-                    window.open(link, '_blank')
+                if (link && popupWindow) {
+                    popupWindow.location = link // Вставляем ссылку после получения
                     this.closeOrderPopup()
                 } else {
                     let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
@@ -230,11 +231,15 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                             errorMessage = 'Ошибка оплаты: ' + response.message
                         }
                     }
+                    if (popupWindow) {
+                        popupWindow.location = 'https://slavalarionov.com/oh-no'
+                    }
                 }
             } catch (e) {
-                alert(
-                    'Ошибка оплаты: test'
-                )
+                if (popupWindow) {
+                    popupWindow.location = 'https://slavalarionov.com/oh-no'
+                }
+                alert('Ошибка оплаты: test')
             }
         },
         dolyamePay(deliveryOptions: {
