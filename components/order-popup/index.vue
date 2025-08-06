@@ -179,12 +179,12 @@ function generateOrderNumber(length: number) {
     return res
 }
 
-async function getPaymentLink() {
+async function getPaymentLink(options: any) {
     const config = useRuntimeConfig()
     const response = await createOrderApi(config, {
-        amount: '1000', // сумма заказа
+        amount: String(options.totalPrice),
         purpose: 'Оплата заказа',
-        paymentMode: ['card'],
+        paymentMode: ['sbp', 'card', 'tinkoff'],
         redirectUrl: 'https://slavalarionov.com/success'
     })
     const link = response?.data?.Data?.paymentLink
@@ -258,11 +258,13 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                getPaymentLink().then((link) => {
+                getPaymentLink(options).then((link) => {
                     if (link) {
                         console.log('Ссылка на оплату:', link)
+                        open(link, '_blank')
                     } else {
                         console.log('Ошибка получения ссылки')
+                        window.open('https://slavalarionov.com/oh-oh', '_blank')
                     }
                 })
             }
