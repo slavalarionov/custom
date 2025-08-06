@@ -218,7 +218,6 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     paymentMode: ['sbp', 'card', 'tinkoff'],
                     redirectUrl: 'https://slavalarionov.com/success'
                 })
-                // Упрощённая проверка ссылки
                 const link =
                     typeof response?.data?.Data?.paymentLink === 'string'
                         ? response.data.Data.paymentLink
@@ -230,8 +229,12 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 } else {
                     let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
                     if (!response?.success) {
-                        if (!response?.success) {
-                        if (response && typeof response === 'object' && 'message' in response && response.message) {
+                        if (
+                            response &&
+                            typeof response === 'object' &&
+                            'message' in response &&
+                            response.message
+                        ) {
                             errorMessage = 'Ошибка оплаты: ' + response.message
                         } else if ('data' in response && response.data) {
                             const errorData = response.data as any
