@@ -233,8 +233,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             } catch (e) {
                 alert(
-                    'Ошибка оплаты: ' +
-                    (e instanceof Error ? e.message : 'Что-то пошло не так')
+                    'Ошибка оплаты: test'
                 )
             }
         },
