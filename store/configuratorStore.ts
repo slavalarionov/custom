@@ -232,6 +232,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                         if (
                             response &&
                             typeof response === 'object' &&
+                            !Array.isArray(response) &&
                             'message' in response &&
                             response.message
                         ) {
