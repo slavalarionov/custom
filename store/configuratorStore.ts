@@ -217,7 +217,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
                     paymentMode: ['sbp', 'card', 'tinkoff'],
                     redirectUrl: 'https://slavalarionov.com/success'
-                })
+                });
                 const link = response?.data?.Data?.paymentLink;
                 if (link && popupWindow) {
                     popupWindow.location = link;
