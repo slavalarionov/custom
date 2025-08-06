@@ -20,6 +20,7 @@ import sendTelegramMessageApi from '@/api/sendTelegramMessageApi'
 import type { deliveryListItemType } from '@/types/deliveryTypes'
 import type selectedDeliveryPoint from '@/types/selectedDeliveryPoint'
 import type deliveryAddressInfoType from '@/types/deliveryAddressInfo'
+import createOrderApi from '@/api/createOrderApi'
 const configuratorStore = useConfiguratorStore()
 const { $lockScroll, $unlockScroll } = useNuxtApp()
 const popupVisible = computed(() => {
@@ -178,9 +179,16 @@ function generateOrderNumber(length: number) {
     return res
 }
 
-function onPayClick() {
-    const popupWindow = window.open();
-    configuratorStore.cardPay(popupWindow);
+async function getPaymentLink() {
+    const config = useRuntimeConfig()
+    const response = await createOrderApi(config, {
+        amount: '1000', // сумма заказа
+        purpose: 'Оплата заказа',
+        paymentMode: ['card'],
+        redirectUrl: 'https://slavalarionov.com/success'
+    })
+    const link = response?.data?.Data?.paymentLink
+    return link
 }
 
 const onPay = async () => {
@@ -250,15 +258,15 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                // Открываем окно сразу по клику
-                const popupWindow = window.open('about:blank');
-                try {
-                    await configuratorStore.cardPay(popupWindow);
-                } catch {
-                    if (popupWindow) {
-                        popupWindow.location = 'https://slavalarionov.com/oh-no';
+                getPaymentLink().then((link) => {
+                    if (link) {
+                        console.log('Ссылка на оплату:', link)
+                        window.open(link, '_self')
+                    } else {
+                        console.log('Ошибка получения ссылки')
+                        window.open('https://slavalarionov.com/oh-no', 'self')
                     }
-                }
+                })
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
