@@ -230,7 +230,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 } else {
                     let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
                     if (!response?.success) {
-                        if ('message' in response && response.message) {
+                        if (!response?.success) {
+                        if (response && typeof response === 'object' && 'message' in response && response.message) {
                             errorMessage = 'Ошибка оплаты: ' + response.message
                         } else if ('data' in response && response.data) {
                             const errorData = response.data as any
