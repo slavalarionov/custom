@@ -179,18 +179,6 @@ function generateOrderNumber(length: number) {
     return res
 }
 
-async function getPaymentLink(options: any) {
-    const config = useRuntimeConfig()
-    const response = await createOrderApi(config, {
-        amount: String(options.totalPrice),
-        purpose: 'Оплата заказа',
-        paymentMode: ['sbp', 'card', 'tinkoff'],
-        redirectUrl: 'https://slavalarionov.com/success'
-    })
-    const link = response?.data?.Data?.paymentLink
-    return link
-}
-
 const onPay = async () => {
     const popup = window.open('', '_blank');
 
@@ -253,14 +241,16 @@ const onPay = async () => {
         const link = response?.data?.Data?.paymentLink;
 
         if (link) {
-            popup!.location.href = link;
+            setTimeout(() => {
+                popup!.location.href = link;
+            }, 0);
         } else {
             console.error('Payment link is not available');
             popup?.close();
             return;
         }
 
-        // Параллельная отправка данных
+// Параллельная отправка данных
         await Promise.all([
             sendRetailCrmApi(config, options),
             sendTelegramMessageApi(config, options),
