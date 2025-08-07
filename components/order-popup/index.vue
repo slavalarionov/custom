@@ -192,6 +192,8 @@ async function getPaymentLink(options: any) {
 }
 
 const onPay = async () => {
+    const popup = window.open('', '_blank')
+
     needValidate.value = true
     await v$.value.$validate()
     if (isFormDataCorrect.value) {
@@ -244,34 +246,19 @@ const onPay = async () => {
             paymentType: state.selectedTypeOfPayment
         }
 
-        const config = useRuntimeConfig()
+        const link = await getPaymentLink(options)
 
+        popup!.location.href = link!
+
+        // Остальная логика
+        const config = useRuntimeConfig()
         await sendRetailCrmApi(config, options)
         await sendTelegramMessageApi(config, options)
         const formData = fillFormData(options)
         sendEmailApi(formData)
 
-        if (totalPriceWithDiscount.value > 0) {
-            if (state.selectedTypeOfPayment === 'Долями от Тинькофф') {
-                configuratorStore.dolyamePay({
-                    deliveryType: deliveryItem.value?.deliveryType || '',
-                    deliveryPrice: deliveryItem.value?.deliveryPrice || 0
-                })
-            } else {
-                getPaymentLink(options).then((link) => {
-                    if (link) {
-                        console.log('Ссылка на оплату:', link)
-                        open(link, '_blank')
-                    } else {
-                        console.log('Ошибка получения ссылки')
-                        window.open('https://slavalarionov.com/oh-oh', '_blank')
-                    }
-                })
-            }
-        } else {
-            window.open('https://slavalarionov.com/success', '_blank')
-            configuratorStore.closeOrderPopup()
-        }
+        configuratorStore.closeOrderPopup()
+
     }
 }
 </script>
@@ -389,10 +376,6 @@ const onPay = async () => {
                         Запомнить эти контакты в браузере для повторной покупки
                     </p>
                 </checkbox-button>
-                <order-popup-payment-type
-                    v-model="state.selectedTypeOfPayment"
-                    default-value="Банковской картой"
-                />
                 <p
                     v-if="!isFormDataCorrect && v$.$dirty"
                     :class="s.orderErrorMessage"
