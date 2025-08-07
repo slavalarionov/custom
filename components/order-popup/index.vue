@@ -192,22 +192,19 @@ async function getPaymentLink(options: any) {
 }
 
 const onPay = async () => {
-    const popup = window.open('', '_blank')
+    const popup = window.open('', '_blank');
 
-    needValidate.value = true
-    await v$.value.$validate()
+    needValidate.value = true;
+    await v$.value.$validate();
     if (isFormDataCorrect.value) {
-
         const options = {
             orderNumber: generateOrderNumber(10),
             strapModel: strapStep.value.strapName || '',
-            strapLeatherColor:
-                designStep.value.leatherColor.name || 'Не выбран',
+            strapLeatherColor: designStep.value.leatherColor.name || 'Не выбран',
             appleWatchModel: modelStep.value.modelName || '',
             appleWatchModelSize: modelStep.value.modelSize + 'мм' || '',
             appleWatchModelColor: modelStep.value.color.name || 'Не выбран',
-            stitchingColor:
-                designStep.value.stitchingColor.title || 'Не выбран',
+            stitchingColor: designStep.value.stitchingColor.title || 'Не выбран',
             edgeColor: designStep.value.edgeColor.title || 'Не выбран',
             buckleColor: designStep.value.buckleColor.title || 'Не выбран',
             adapterColor: designStep.value.adapterColor.title || 'Не выбран',
@@ -223,9 +220,8 @@ const onPay = async () => {
                 text: finalStep.value.additionalOptions.postCard.text
             },
             buckleButterfly: {
-                available:
-                    !!configuratorStore.selectedStrapModel?.attributes
-                        .watch_strap.has_buckle_butterfly,
+                available: !!configuratorStore.selectedStrapModel?.attributes
+                    .watch_strap.has_buckle_butterfly,
                 choosen: designStep.value.buckleButterflyChoosen
             },
             receiverFullname: state.receiver,
@@ -244,31 +240,37 @@ const onPay = async () => {
             promo: finalStep.value.promo,
             totalPrice: configuratorStore.totalPriceWithDiscount,
             paymentType: state.selectedTypeOfPayment
-        }
+        };
 
-        const link = await getPaymentLink(options)
-        console.log(link)
+        const config = useRuntimeConfig();
+        const response = await createOrderApi(config, {
+            amount: String(options.totalPrice),
+            purpose: 'Оплата заказа',
+            paymentMode: ['sbp', 'card', 'tinkoff'],
+            redirectUrl: 'https://slavalarionov.com/success'
+        });
+
+        const link = response?.data?.Data?.paymentLink;
 
         if (link) {
-            setTimeout(() => {
-                popup!.location.href = link
-            }, 5000)
+            popup!.location.href = link;
         } else {
-            popup!.close()
-            alert('Ошибка: не удалось получить ссылку для оплаты')
+            console.error('Payment link is not available');
+            popup?.close();
+            return;
         }
 
-        // Остальная логика
-        const config = useRuntimeConfig()
-        await sendRetailCrmApi(config, options)
-        await sendTelegramMessageApi(config, options)
-        const formData = fillFormData(options)
-        sendEmailApi(formData)
+        // Параллельная отправка данных
+        await Promise.all([
+            sendRetailCrmApi(config, options),
+            sendTelegramMessageApi(config, options),
+            sendEmailApi(fillFormData(options))
+        ]);
 
-        configuratorStore.closeOrderPopup()
-
+        configuratorStore.closeOrderPopup();
     }
-}
+};
+
 </script>
 
 <template>
