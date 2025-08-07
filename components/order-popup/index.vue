@@ -247,10 +247,16 @@ const onPay = async () => {
         }
 
         const link = await getPaymentLink(options)
+        console.log(link)
 
-        setTimeout(() => {
-            popup!.location.href = link!
-        }, 5000)
+        if (link) {
+            setTimeout(() => {
+                popup!.location.href = link
+            }, 5000)
+        } else {
+            popup!.close()
+            alert('Ошибка: не удалось получить ссылку для оплаты')
+        }
 
         // Остальная логика
         const config = useRuntimeConfig()
