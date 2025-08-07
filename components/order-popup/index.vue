@@ -248,7 +248,9 @@ const onPay = async () => {
 
         const link = await getPaymentLink(options)
 
-        popup!.location.href = link!
+        setTimeout(() => {
+            popup!.location.href = link!
+        }, 5000)
 
         // Остальная логика
         const config = useRuntimeConfig()
