@@ -245,7 +245,7 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                return
+                configuratorStore.cardPay()
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
@@ -413,7 +413,7 @@ const onPay = async () => {
                 <primary-btn
                     :class="s.orderPayBtn"
                     :active="true"
-                    @click="configuratorStore.cardPay"
+                    @click="onPay"
                 >
                     Оплатить картой
                 </primary-btn>
