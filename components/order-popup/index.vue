@@ -178,6 +178,29 @@ function generateOrderNumber(length: number) {
     return res
 }
 
+const getPaymentLink = async () => {
+    const config = useRuntimeConfig()
+    const win = window.open('', '_blank')
+    try {
+        const response = await createOrderApi(config, {
+            amount: String(totalPriceWithDiscount.value),
+            purpose: `Оплата заказа`,
+            paymentMode: ['card'],
+            redirectUrl: 'https://slavalarionov.com/success'
+        })
+        const link = response?.data?.Data?.paymentLink
+        if (link && win) {
+            win.location.href = link
+        } else if (win) {
+            win.close()
+            alert('Ссылка не получена')
+        }
+    } catch {
+        if (win) win.close()
+        alert('Ошибка получения ссылки')
+    }
+}
+
 const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
@@ -244,7 +267,7 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                configuratorStore.cardPay()
+                return
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
@@ -415,6 +438,13 @@ const onPay = async () => {
                     @click="onPay"
                     >Оплатить заказ</primary-btn
                 >
+                <primary-btn
+                    :class="s.orderPayBtn"
+                    :active="true"
+                    @click="getPaymentLink"
+                >
+                    Оплатить картой
+                </primary-btn>
                 <p :class="s.orderPolicy">
                     Нажимая на “Оплатить заказ”, вы соглашаетесь с
                     <a
