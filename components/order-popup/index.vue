@@ -17,6 +17,7 @@ import promoCodeApi from '@/api/promoCodeApi'
 import sendEmailApi from '@/api/sendEmailApi'
 import sendRetailCrmApi from '@/api/sendRetailCrmApi'
 import sendTelegramMessageApi from '@/api/sendTelegramMessageApi'
+import createOrderApi from '@/api/createOrderApi'
 import type { deliveryListItemType } from '@/types/deliveryTypes'
 import type selectedDeliveryPoint from '@/types/selectedDeliveryPoint'
 import type deliveryAddressInfoType from '@/types/deliveryAddressInfo'
@@ -178,6 +179,9 @@ function generateOrderNumber(length: number) {
     return res
 }
 
+const paymentLink = ref<string | null>(null)
+const paymentModalVisible = ref(false)
+
 const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
@@ -244,7 +248,20 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                configuratorStore.cardPay()
+                const config = useRuntimeConfig()
+                const response = await createOrderApi(config, {
+                    amount: String(totalPriceWithDiscount.value),
+                    purpose: `Заказ ремешка ${strapStep.value.strapName} для модели ${modelStep.value.modelName}`,
+                    paymentMode: ['sbp', 'card', 'tinkoff'],
+                    redirectUrl: 'https://slavalarionov.com/success'
+                })
+                const link = response?.data?.Data?.paymentLink
+                if (typeof link === 'string') {
+                    paymentLink.value = link
+                    paymentModalVisible.value = true
+                } else {
+                    alert('Ошибка оплаты: ссылка не получена')
+                }
             }
         } else {
             window.open('https://slavalarionov.com/success', '_blank')
@@ -425,6 +442,19 @@ const onPay = async () => {
             </div>
         </div>
     </transition>
+    <div v-if="paymentModalVisible" class="payment-modal">
+        <div class="payment-modal-content">
+            <h3>Оплата заказа</h3>
+            <p>Для завершения заказа нажмите кнопку ниже:</p>
+            <primary-btn
+                :active="true"
+                @click="() => { window.open(paymentLink, '_blank'); paymentModalVisible = false; closeOrderPopup(); }"
+            >
+                Оплатить онлайн
+            </primary-btn>
+            <button @click="paymentModalVisible = false">Отмена</button>
+        </div>
+    </div>
 </template>
 
 <style lang="scss" module="s">

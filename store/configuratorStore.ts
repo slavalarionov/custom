@@ -208,38 +208,6 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        cardPay() {
-            const widget = new cp.CloudPayments()
-            widget.pay(
-                'charge', // или 'charge'
-                {
-                    // options
-                    publicId: 'pk_b40386c631341a63812676ab67bb0', // id из личного кабинета
-                    description: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`, // назначение
-                    amount: this.totalPriceWithDiscount, // сумма
-                    currency: 'RUB', // валюта
-                    skin: 'mini', // дизайн виджета (необязательно),
-                    email: this.steps.final.email,
-                    configuration: {
-                        common: {}
-                    },
-                    requireEmail: true
-                },
-                {
-                    onSuccess: function () {
-                        window.open(
-                            'https://slavalarionov.com/success',
-                            '_blank'
-                        )
-                        this.closeOrderPopup()
-                    },
-                    onFail: function () {
-                        window.open('https://slavalarionov.com/oh-no', '_blank')
-                    },
-                    onComplete: function () {}
-                }
-            )
-        },
         dolyamePay(deliveryOptions: {
             deliveryType: string
             deliveryPrice: number
