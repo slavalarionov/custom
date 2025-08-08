@@ -181,7 +181,6 @@ function generateOrderNumber(length: number) {
 
 const getPaymentLink = async () => {
     const config = useRuntimeConfig()
-    const win = window.open('', '_blank')
     try {
         const response = await createOrderApi(config, {
             amount: String(totalPriceWithDiscount.value),
@@ -190,14 +189,12 @@ const getPaymentLink = async () => {
             redirectUrl: 'https://slavalarionov.com/success'
         })
         const link = response?.data?.Data?.paymentLink
-        if (link && win) {
-            win.location.href = link
-        } else if (win) {
-            win.close()
+        if (link) {
+            window.open(link, '_blank')
+        } else {
             alert('Ссылка не получена')
         }
     } catch {
-        if (win) win.close()
         alert('Ошибка получения ссылки')
     }
 }
