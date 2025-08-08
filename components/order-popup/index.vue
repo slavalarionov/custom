@@ -186,7 +186,7 @@ const getPaymentLink = async () => {
         const response = await createOrderApi(config, {
             amount: String(totalPriceWithDiscount.value),
             purpose: `Оплата заказа`,
-            paymentMode: ['sbp', 'card', 'tinkoff'],
+            paymentMode: ['sbp'],
             redirectUrl: 'https://slavalarionov.com/success'
         })
         const link = response?.data?.Data?.paymentLink
