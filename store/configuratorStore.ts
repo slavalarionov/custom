@@ -1,4 +1,3 @@
-import axios from 'axios'
 import buckleButterflyType from '@/types/buckleButterfly'
 import { useRuntimeConfig } from '#imports'
 import watchModelsApi from '@/api/watchModelsApi'
@@ -8,19 +7,18 @@ import watchStrapParamsApi from '@/api/watchStrapParamsApi'
 import dolyameCreateApi from '@/api/dolyameCreateApi'
 import type additionalOptionType from '@/types/additionalOption'
 import type { additionalOptionsType } from '@/types/additionalOption'
-import type watchModelsType from '@/types/watchModels'
-import type { singleWatchModelType } from '@/types/watchModels'
-import type watchModelSizesType from '@/types/watchModelSizes'
-import type frameColorsType from '@/types/frameColors'
-import type configuratorSteps from '@/types/configuratorSteps'
-import type watchStrapsType from '@/types/watchStraps'
+import type watchModelsType from 'types/watchModels'
+import type { singleWatchModelType } from 'types/watchModels'
+import type watchModelSizesType from 'types/watchModelSizes'
+import type frameColorsType from 'types/frameColors'
+import type configuratorSteps from 'types/configuratorSteps'
+import type watchStrapsType from 'types/watchStraps'
 import type {
     singleWatchStrap,
     strapParamsType,
     strapColorParam
-} from '@/types/watchStraps'
+} from 'types/watchStraps'
 import type finalImagesListType from '@/types/finalImages'
-import { defineStore } from 'pinia'
 type promoType = {
     promoFound: boolean
     type: 'percent' | 'ruble'
@@ -210,60 +208,37 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        async cardPay(): Promise<void> {
-            try {
-                const response = await axios.post('/api/createOrder.php', {
-                    amount: String(this.totalPriceWithDiscount),
-                    purpose: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
-                    paymentMode: ['sbp', 'card', 'tinkoff'],
-                    redirectUrl: 'https://slavalarionov.com/success'
-                })
-                // Упрощённая проверка ссылки
-                const link =
-                    typeof response.data?.data?.Data?.paymentLink === 'string'
-                        ? response.data.data.Data.paymentLink
-                        : undefined
-
-                if (link) {
-                    window.open(link, '_blank')
-                    this.closeOrderPopup()
-                } else {
-                    let errorMessage = 'Ошибка оплаты: Что-то пошло не так'
-                    if (!response.data.success) {
-                        if (
-                            'message' in response.data &&
-                            response.data.message
-                        ) {
-                            errorMessage =
-                                'Ошибка оплаты: ' + response.data.message
-                        } else if (
-                            'data' in response.data &&
-                            response.data.data
-                        ) {
-                            const errorData = response.data.data as any
-                            if (typeof errorData === 'string') {
-                                errorMessage = 'Ошибка оплаты: ' + errorData
-                            } else if (errorData.error) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' + errorData.error
-                            } else if (errorData.message) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' + errorData.message
-                            } else if (errorData.errors) {
-                                errorMessage =
-                                    'Ошибка оплаты: ' +
-                                    JSON.stringify(errorData.errors)
-                            }
-                        }
-                    }
-                    alert(errorMessage)
+        cardPay() {
+            const widget = new cp.CloudPayments()
+            widget.pay(
+                'charge', // или 'charge'
+                {
+                    // options
+                    publicId: 'pk_b40386c631341a63812676ab67bb0', // id из личного кабинета
+                    description: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`, // назначение
+                    amount: this.totalPriceWithDiscount, // сумма
+                    currency: 'RUB', // валюта
+                    skin: 'mini', // дизайн виджета (необязательно),
+                    email: this.steps.final.email,
+                    configuration: {
+                        common: {}
+                    },
+                    requireEmail: true
+                },
+                {
+                    onSuccess: function () {
+                        window.open(
+                            'https://slavalarionov.com/success',
+                            '_blank'
+                        )
+                        this.closeOrderPopup()
+                    },
+                    onFail: function () {
+                        window.open('https://slavalarionov.com/oh-no', '_blank')
+                    },
+                    onComplete: function () {}
                 }
-            } catch (e) {
-                alert(
-                    'Ошибка оплаты: ' +
-                        (e instanceof Error ? e.message : 'Что-то пошло не так')
-                )
-            }
+            )
         },
         dolyamePay(deliveryOptions: {
             deliveryType: string
@@ -279,11 +254,11 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             this.additionalOption?.data.attributes.additional_options.forEach(
                 (option) => {
                     option.choosen &&
-                        orderItems.push({
-                            name: option.option_title,
-                            quantity: 1,
-                            price: Number(option.option_price)
-                        })
+                    orderItems.push({
+                        name: option.option_title,
+                        quantity: 1,
+                        price: Number(option.option_price)
+                    })
                 }
             )
             if (
@@ -421,10 +396,10 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 const target =
                     title !== ''
                         ? this.selectedWatchModelStraps.data.find(
-                              (item) =>
-                                  item.attributes.watch_strap.strap_title ===
-                                  title
-                          ) || this.selectedWatchModelStraps.data[0]
+                        (item) =>
+                            item.attributes.watch_strap.strap_title ===
+                            title
+                    ) || this.selectedWatchModelStraps.data[0]
                         : this.selectedWatchModelStraps.data[0]
                 target.choosen = true
                 if (!target.dataFetched) {
@@ -722,44 +697,44 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStrapModel?.attributes.watch_strap.view_1
-                          ?.main_image?.data?.attributes?.url || ''
+                    ?.main_image?.data?.attributes?.url || ''
                     : this.selectedStrapModel?.attributes.watch_strap.view_1
-                          .ultra_main_image.data.attributes.url || ''
+                    .ultra_main_image.data.attributes.url || ''
             )
             pushItem(this.selectedStrapFrameColorImages.view1)
             pushItem(
                 !this.isUltraModel
                     ? this.selectedLeatherColor?.view_1?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedLeatherColor?.ultra_view_1.data.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedEdgeColor?.view_1?.data?.attributes.url || ''
                     : this.selectedEdgeColor?.ultra_view_1?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedAdapterColor?.view_1?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedAdapterColor?.ultra_view_1?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedBuckleColor?.view_1?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedBuckleColor?.ultra_view_1?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStitchingColor?.view_1?.data?.attributes
-                          .url || ''
+                    .url || ''
                     : this.selectedStitchingColor?.ultra_view_1?.data
-                          ?.attributes.url || ''
+                    ?.attributes.url || ''
             )
             return arr
         },
@@ -777,43 +752,43 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStrapModel?.attributes.watch_strap.view_2
-                          ?.main_image?.data?.attributes?.url || ''
+                    ?.main_image?.data?.attributes?.url || ''
                     : this.selectedStrapModel?.attributes.watch_strap.view_2
-                          ?.ultra_main_image?.data?.attributes?.url || ''
+                    ?.ultra_main_image?.data?.attributes?.url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedLeatherColor?.view_2?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedLeatherColor?.ultra_view_2?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedEdgeColor?.view_2?.data?.attributes.url || ''
                     : this.selectedEdgeColor?.ultra_view_2?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedAdapterColor?.view_2?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedAdapterColor?.ultra_view_2?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedBuckleColor?.view_2?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedBuckleColor?.ultra_view_2?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStitchingColor?.view_2?.data?.attributes
-                          .url || ''
+                    .url || ''
                     : this.selectedStitchingColor?.ultra_view_2?.data
-                          ?.attributes.url || ''
+                    ?.attributes.url || ''
             )
             return arr
         },
@@ -831,44 +806,44 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStrapModel?.attributes.watch_strap.view_3
-                          ?.main_image?.data?.attributes?.url || ''
+                    ?.main_image?.data?.attributes?.url || ''
                     : this.selectedStrapModel?.attributes.watch_strap.view_3
-                          ?.ultra_main_image?.data?.attributes?.url || ''
+                    ?.ultra_main_image?.data?.attributes?.url || ''
             )
             pushItem(this.selectedStrapFrameColorImages.view2)
             pushItem(
                 !this.isUltraModel
                     ? this.selectedLeatherColor?.view_3?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedLeatherColor?.ultra_view_3?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedEdgeColor?.view_3?.data?.attributes.url || ''
                     : this.selectedEdgeColor?.ultra_view_3?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedAdapterColor?.view_3?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedAdapterColor?.ultra_view_3?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedBuckleColor?.view_3?.data?.attributes.url ||
-                          ''
+                    ''
                     : this.selectedBuckleColor?.ultra_view_3?.data?.attributes
-                          .url || ''
+                    .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStitchingColor?.view_3?.data?.attributes
-                          .url || ''
+                    .url || ''
                     : this.selectedStitchingColor?.ultra_view_3?.data
-                          ?.attributes.url || ''
+                    ?.attributes.url || ''
             )
             return arr
         },
@@ -937,11 +912,11 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     Number(
                         this.selectedStrapModel.attributes.watch_strap
                             .buckle_butterfly_choosen &&
-                            this.buckleButterfly?.data.attributes.buckle_price
+                        this.buckleButterfly?.data.attributes.buckle_price
                     ) || 0
                 return (
                     buckleButterflyPrice +
-                        this.selectedStrapModel?.attributes.watch_strap.price ||
+                    this.selectedStrapModel?.attributes.watch_strap.price ||
                     0
                 )
             }
@@ -955,8 +930,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 const discount =
                     this.usedPromo?.type === 'percent'
                         ? this.selectedStrapPrice *
-                          this.productAmount *
-                          (this.usedPromo.discountValue / 100)
+                        this.productAmount *
+                        (this.usedPromo.discountValue / 100)
                         : this.usedPromo?.discountValue || 0
                 return this.selectedStrapPrice - discount > 0
                     ? this.selectedStrapPrice - discount

@@ -41,4 +41,6 @@ type watchAngles = {
     }
 }[]
 
-export type { watchAngles as default }
+export type {
+    watchAngles as default
+}

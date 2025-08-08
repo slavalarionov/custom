@@ -85,7 +85,7 @@ watch(
             :visible="props.isLoading"
             :class="s.dataLoaderSpinner"
             type="small"
-            :border-colors="['#cccccc', '#01416D']"
+            :border-colors="['#cccccc', '#4E68F2']"
         />
         <transition name="fade-up">
             <div

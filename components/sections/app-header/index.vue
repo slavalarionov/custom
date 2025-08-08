@@ -47,6 +47,9 @@ const otherNavItems = [
     background: $secondary-color;
     color: #fff;
     padding: 16px 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
 }
 .headerContainer {
     display: flex;

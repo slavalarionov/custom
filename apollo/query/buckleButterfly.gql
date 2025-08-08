@@ -3,13 +3,13 @@ query {
         data {
             attributes {
                 buckle_name
-                buckle_price
-                buckle_image {
-                    data {
-                        attributes {
-                            url
+                    buckle_price
+                    buckle_image {
+                        data {
+                            attributes {
+                                url
+                            }
                         }
-                    }
                 }
             }
         }

@@ -3,8 +3,8 @@ import watchModelStep from './watch-model-step/index.vue'
 import strapModelStep from './strap-model-step/index.vue'
 import strapDesignStep from './strap-design-step/index.vue'
 import finalStep from './final-step/index.vue'
-import type watchModelsType from '@/types/watchModels'
-import type { singleWatchModelType } from '@/types/watchModels'
+import type watchModelsType from 'types/watchModels'
+import type { singleWatchModelType } from 'types/watchModels'
 const configuratorStore = useConfiguratorStore()
 const watchModels: ComputedRef<watchModelsType | null> = computed(() => {
     return configuratorStore.watchModels
