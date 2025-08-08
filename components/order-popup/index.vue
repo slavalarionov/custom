@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, computed } from 'vue'
+import { ref, type Ref, computed, reactive, watch } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 import type deliveryStateType from './deliveryState'
@@ -8,7 +8,7 @@ import orderPopupInfo from './order-popup-info/index.vue'
 import orderPopupPaymentType from './order-popup-payment-type/index.vue'
 import fillFormData from './fillFormData'
 import { useConfiguratorStore } from '@/store/configuratorStore'
-import { ComputedRef, useNuxtApp } from '#imports'
+import { ComputedRef, useNuxtApp, useRuntimeConfig } from '#imports'
 import inputField from '@/components/UI/input-field.vue'
 import checkboxButton from '@/components/UI/checkbox-button.vue'
 import crossIcon from '@/components/icons/cross-icon.vue'
@@ -21,14 +21,12 @@ import createOrderApi from '@/api/createOrderApi'
 import type { deliveryListItemType } from '@/types/deliveryTypes'
 import type selectedDeliveryPoint from '@/types/selectedDeliveryPoint'
 import type deliveryAddressInfoType from '@/types/deliveryAddressInfo'
+
 const configuratorStore = useConfiguratorStore()
 const { $lockScroll, $unlockScroll } = useNuxtApp()
-const popupVisible = computed(() => {
-    return configuratorStore.orderPopupVisible
-})
-const telLengthValidate = (value: string) => {
-    return value.replace(/[^0-9]/g, '').length === 11
-}
+const popupVisible = computed(() => configuratorStore.orderPopupVisible)
+const telLengthValidate = (value: string) => value.replace(/[^0-9]/g, '').length === 11
+
 const state = reactive({
     email: '',
     tel: '',
@@ -57,24 +55,13 @@ const isFormDataCorrect: ComputedRef<boolean> = computed(() => {
     return v$.value.$dirty && !v$.value.$errors.length && !!deliveryItem.value
 })
 const deliveryItem: Ref<deliveryListItemType | null> = ref(null)
-const modelStep = computed(() => {
-    return configuratorStore.steps.model
-})
-const strapStep = computed(() => {
-    return configuratorStore.steps.strap
-})
-const designStep = computed(() => {
-    return configuratorStore.steps.strapDesign
-})
-const finalStep = computed(() => {
-    return configuratorStore.steps.final
-})
-const totalPrice = computed(() => {
-    return configuratorStore.totalPrice
-})
-const totalPriceWithDiscount = computed(() => {
-    return configuratorStore.totalPriceWithDiscount
-})
+const modelStep = computed(() => configuratorStore.steps.model)
+const strapStep = computed(() => configuratorStore.steps.strap)
+const designStep = computed(() => configuratorStore.steps.strapDesign)
+const finalStep = computed(() => configuratorStore.steps.final)
+const totalPrice = computed(() => configuratorStore.totalPrice)
+const totalPriceWithDiscount = computed(() => configuratorStore.totalPriceWithDiscount)
+
 const onDeliveryTypeChoose = (item: deliveryListItemType) => {
     deliveryItem.value = item
 }
@@ -89,9 +76,7 @@ watch(
     (item) => {
         configuratorStore.deliveryPrice = item?.deliveryPrice || 0
     },
-    {
-        deep: true
-    }
+    { deep: true }
 )
 const checkPromo = async () => {
     if (!state.deliveryPromoCode) {
@@ -129,8 +114,7 @@ watch(
                 promoResultTextVisible.value = false
             }
             $lockScroll()
-            configuratorStore.deliveryPrice =
-                deliveryItem.value?.deliveryPrice || 0
+            configuratorStore.deliveryPrice = deliveryItem.value?.deliveryPrice || 0
         } else {
             $unlockScroll()
         }
@@ -186,17 +170,14 @@ const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
     if (isFormDataCorrect.value) {
-
         const options = {
             orderNumber: generateOrderNumber(10),
             strapModel: strapStep.value.strapName || '',
-            strapLeatherColor:
-                designStep.value.leatherColor.name || 'Не выбран',
+            strapLeatherColor: designStep.value.leatherColor.name || 'Не выбран',
             appleWatchModel: modelStep.value.modelName || '',
             appleWatchModelSize: modelStep.value.modelSize + 'мм' || '',
             appleWatchModelColor: modelStep.value.color.name || 'Не выбран',
-            stitchingColor:
-                designStep.value.stitchingColor.title || 'Не выбран',
+            stitchingColor: designStep.value.stitchingColor.title || 'Не выбран',
             edgeColor: designStep.value.edgeColor.title || 'Не выбран',
             buckleColor: designStep.value.buckleColor.title || 'Не выбран',
             adapterColor: designStep.value.adapterColor.title || 'Не выбран',
@@ -212,9 +193,7 @@ const onPay = async () => {
                 text: finalStep.value.additionalOptions.postCard.text
             },
             buckleButterfly: {
-                available:
-                    !!configuratorStore.selectedStrapModel?.attributes
-                        .watch_strap.has_buckle_butterfly,
+                available: !!configuratorStore.selectedStrapModel?.attributes.watch_strap.has_buckle_butterfly,
                 choosen: designStep.value.buckleButterflyChoosen
             },
             receiverFullname: state.receiver,
@@ -248,7 +227,6 @@ const onPay = async () => {
                     deliveryPrice: deliveryItem.value?.deliveryPrice || 0
                 })
             } else {
-                const config = useRuntimeConfig()
                 const response = await createOrderApi(config, {
                     amount: String(totalPriceWithDiscount.value),
                     purpose: `Заказ ремешка ${strapStep.value.strapName} для модели ${modelStep.value.modelName}`,
@@ -267,6 +245,16 @@ const onPay = async () => {
             window.open('https://slavalarionov.com/success', '_blank')
             configuratorStore.closeOrderPopup()
         }
+    }
+}
+
+const onPaymentClick = () => {
+    if (paymentLink.value) {
+        window.open(paymentLink.value, '_blank')
+        paymentModalVisible.value = false
+        closeOrderPopup()
+    } else {
+        alert('Ссылка для оплаты не найдена')
     }
 }
 </script>
@@ -354,7 +342,7 @@ const onPay = async () => {
                                 :active="true"
                                 :class="s.promoUseBtn"
                                 @click="checkPromo"
-                                >Применить</primary-btn
+                            >Применить</primary-btn
                             >
                         </transition>
                         <transition name="fade">
@@ -406,12 +394,12 @@ const onPay = async () => {
                                         totalPriceWithDiscount !== totalPrice
                                 }
                             ]"
-                            >{{ totalPrice }}</span
+                        >{{ totalPrice }}</span
                         >
                         <span
                             v-if="totalPriceWithDiscount !== totalPrice"
                             :class="s.orderPriceWithDiscount"
-                            >{{ totalPriceWithDiscount }}</span
+                        >{{ totalPriceWithDiscount }}</span
                         >
                         руб.
                     </p>
@@ -430,13 +418,13 @@ const onPay = async () => {
                     :class="s.orderPayBtn"
                     :active="true"
                     @click="onPay"
-                    >Оплатить заказ</primary-btn
+                >Оплатить заказ</primary-btn
                 >
                 <p :class="s.orderPolicy">
                     Нажимая на “Оплатить заказ”, вы соглашаетесь с
                     <a
                         href="https://slavalarionov.com/slavalarionovstore/policy"
-                        >политикой конфиденциальности</a
+                    >политикой конфиденциальности</a
                     >.
                 </p>
             </div>
@@ -448,7 +436,7 @@ const onPay = async () => {
             <p>Для завершения заказа нажмите кнопку ниже:</p>
             <primary-btn
                 :active="true"
-                @click="() => { window.open(paymentLink, '_blank'); paymentModalVisible = false; closeOrderPopup(); }"
+                @click="onPaymentClick"
             >
                 Оплатить онлайн
             </primary-btn>
