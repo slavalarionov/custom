@@ -179,27 +179,6 @@ function generateOrderNumber(length: number) {
     return res
 }
 
-const getPaymentLink = async () => {
-    const config = useRuntimeConfig()
-    try {
-        const response = await createOrderApi(config, {
-            amount: String(totalPriceWithDiscount.value),
-            purpose: `Оплата заказа`,
-            paymentMode: ['sbp'],
-            redirectUrl: 'https://slavalarionov.com/success'
-        })
-        const link = response?.data?.Data?.paymentLink
-        if (link) {
-            localStorage.setItem('paymentLink', link)
-            window.location.href = '/payment-page'
-        } else {
-            alert('Ссылка не получена')
-        }
-    } catch {
-        alert('Ошибка получения ссылки')
-    }
-}
-
 const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
@@ -431,16 +410,10 @@ const onPay = async () => {
                         вашего ремешка.
                     </p>
                 </div>
-<!--                <primary-btn-->
-<!--                    :class="s.orderPayBtn"-->
-<!--                    :active="true"-->
-<!--                    @click="onPay"-->
-<!--                    >Оплатить заказ</primary-btn-->
-<!--                >-->
                 <primary-btn
                     :class="s.orderPayBtn"
                     :active="true"
-                    @click="getPaymentLink"
+                    @click="configuratorStore.cardPay"
                 >
                     Оплатить картой
                 </primary-btn>

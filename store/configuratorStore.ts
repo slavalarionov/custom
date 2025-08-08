@@ -208,38 +208,54 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        // cardPay() {
-        //     const widget = new cp.CloudPayments()
-        //     widget.pay(
-        //         'charge', // или 'charge'
-        //         {
-        //             // options
-        //             publicId: 'pk_b40386c631341a63812676ab67bb0', // id из личного кабинета
-        //             description: `Заказ ремешка ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`, // назначение
-        //             amount: this.totalPriceWithDiscount, // сумма
-        //             currency: 'RUB', // валюта
-        //             skin: 'mini', // дизайн виджета (необязательно),
-        //             email: this.steps.final.email,
-        //             configuration: {
-        //                 common: {}
-        //             },
-        //             requireEmail: true
-        //         },
-        //         {
-        //             onSuccess: function () {
-        //                 window.open(
-        //                     'https://slavalarionov.com/success',
-        //                     '_blank'
-        //                 )
-        //                 this.closeOrderPopup()
-        //             },
-        //             onFail: function () {
-        //                 window.open('https://slavalarionov.com/oh-no', '_blank')
-        //             },
-        //             onComplete: function () {}
-        //         }
-        //     )
-        // },
+        cardPay() {
+            const orderItems = [
+                {
+                    name: `Ремешок ${this.steps.strap.strapName} для модели ${this.steps.model.modelName}`,
+                    quantity: 1,
+                    price: this.selectedStrapPrice
+                }
+            ]
+            this.additionalOption?.data.attributes.additional_options.forEach(
+                (option) => {
+                    option.choosen &&
+                    orderItems.push({
+                        name: option.option_title,
+                        quantity: 1,
+                        price: Number(option.option_price)
+                    })
+                }
+            )
+            if (this.deliveryPrice) {
+                orderItems.push({
+                    name: this.steps.final.deliveryType || 'Доставка',
+                    quantity: 1,
+                    price: Number(this.deliveryPrice)
+                })
+            }
+            const orderData = {
+                orderId: this.orderNumber,
+                phone: this.steps.final.phone,
+                email: this.steps.final.email,
+                name: this.steps.final.name,
+                amount: this.totalPriceWithDiscount,
+                items: orderItems
+            }
+            const popupWindow = window.open()
+            createOrderApi(useRuntimeConfig(), {
+                amount: String(this.totalPriceWithDiscount),
+                purpose: `Оплата заказа`,
+                paymentMode: ['sbp'],
+                redirectUrl: 'https://slavalarionov.com/success'
+            }).then((response) => {
+                const link = response?.data?.Data?.paymentLink
+                if (link && popupWindow) {
+                    popupWindow.location = link
+                } else if (popupWindow) {
+                    popupWindow.location = 'https://slavalarionov.com/oh-no'
+                }
+            })
+        },
         dolyamePay(deliveryOptions: {
             deliveryType: string
             deliveryPrice: number
