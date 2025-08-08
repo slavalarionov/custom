@@ -190,7 +190,8 @@ const getPaymentLink = async () => {
         })
         const link = response?.data?.Data?.paymentLink
         if (link) {
-            window.open(link, '_blank')
+            localStorage.setItem('paymentLink', link)
+            window.location.href = '/payment-page'
         } else {
             alert('Ссылка не получена')
         }
