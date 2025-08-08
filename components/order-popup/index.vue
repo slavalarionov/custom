@@ -186,7 +186,7 @@ const getPaymentLink = async () => {
         const response = await createOrderApi(config, {
             amount: String(totalPriceWithDiscount.value),
             purpose: `Оплата заказа`,
-            paymentMode: ['card'],
+            paymentMode: ['sbp', 'card', 'tinkoff'],
             redirectUrl: 'https://slavalarionov.com/success'
         })
         const link = response?.data?.Data?.paymentLink
@@ -391,10 +391,10 @@ const onPay = async () => {
                         Запомнить эти контакты в браузере для повторной покупки
                     </p>
                 </checkbox-button>
-                <order-popup-payment-type
-                    v-model="state.selectedTypeOfPayment"
-                    default-value="Банковской картой"
-                />
+<!--                <order-popup-payment-type-->
+<!--                    v-model="state.selectedTypeOfPayment"-->
+<!--                    default-value="Банковской картой"-->
+<!--                />-->
                 <p
                     v-if="!isFormDataCorrect && v$.$dirty"
                     :class="s.orderErrorMessage"
@@ -433,12 +433,12 @@ const onPay = async () => {
                         вашего ремешка.
                     </p>
                 </div>
-                <primary-btn
-                    :class="s.orderPayBtn"
-                    :active="true"
-                    @click="onPay"
-                    >Оплатить заказ</primary-btn
-                >
+<!--                <primary-btn-->
+<!--                    :class="s.orderPayBtn"-->
+<!--                    :active="true"-->
+<!--                    @click="onPay"-->
+<!--                    >Оплатить заказ</primary-btn-->
+<!--                >-->
                 <primary-btn
                     :class="s.orderPayBtn"
                     :active="true"
