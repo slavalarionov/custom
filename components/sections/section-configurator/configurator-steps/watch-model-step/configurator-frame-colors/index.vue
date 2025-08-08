@@ -85,7 +85,7 @@ const watchFrameColors: ComputedRef<frameColorsType | null> = computed(() => {
         }
         &.choosen {
             background: #fff;
-            border-color: #4e68f2;
+            border-color: #5078DF;
         }
     }
     &_empty-item {

@@ -46,7 +46,7 @@ const emit = defineEmits(['pay'])
             </div>
         </div>
         <primary-btn :class="s.totalPayBtn" :active="true" @click="payFunc">
-            Оплатить заказ
+            Перейти к оформлению
         </primary-btn>
         <div :class="s.stepPayDescription">
             <p :class="s.stepPayDescriptionReadyDate">

@@ -23,7 +23,7 @@ defineEmits(['update:modelValue'])
     &.checked {
         & .switcher__btn::before {
             transform: translate(100%, -50%);
-            background: #4e68f2;
+            background: #5078DF;
         }
     }
 }

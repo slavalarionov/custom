@@ -488,7 +488,7 @@ onMounted(async () => {
                 :visible="!deliveryInfoLoaded"
                 :class="s.dataLoaderSpinner"
                 type="small"
-                :border-colors="['#cccccc', '#4E68F2']"
+                :border-colors="['#cccccc', '#5078DF']"
             />
             <p :class="s.deliveryInfoLoadingText">
                 Загрузка данных доставки...

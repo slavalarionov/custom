@@ -130,7 +130,7 @@ watch(
         left: 0;
         width: 0;
         height: 2px;
-        background: #4e68f2;
+        background: #5078DF;
         transition: 0.4s ease;
     }
     &.completed::after {

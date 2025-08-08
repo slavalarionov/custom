@@ -91,7 +91,7 @@ const selectItem = (id: number) => {
     max-width: 220px;
     &.choosen {
         .itemImageInner {
-            border-color: #4e68f2;
+            border-color: #5078DF;
             background: #fff;
         }
     }

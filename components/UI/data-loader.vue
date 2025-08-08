@@ -8,7 +8,7 @@ const props = withDefaults(
     {
         visible: false,
         type: 'fullscreen',
-        borderColors: () => ['#4E68F2', '#ffffff']
+        borderColors: () => ['#5078DF', '#ffffff']
     }
 )
 </script>

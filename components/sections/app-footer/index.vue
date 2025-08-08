@@ -95,7 +95,7 @@ import pinterestIcon from '@/components/icons/pinterest-icon.vue'
                         >
                             <yandex-dzen-icon
                                 :class="s.footerContactSocialsItemIcon"
-                                hover-color="#4E68F2"
+                                hover-color="#5078DF"
                             />
                         </a>
                         <a
@@ -104,7 +104,7 @@ import pinterestIcon from '@/components/icons/pinterest-icon.vue'
                         >
                             <vk-icon
                                 :class="s.footerContactSocialsItemIcon"
-                                hover-color="#4E68F2"
+                                hover-color="#5078DF"
                             />
                         </a>
                         <a
@@ -113,7 +113,7 @@ import pinterestIcon from '@/components/icons/pinterest-icon.vue'
                         >
                             <pinterest-icon
                                 :class="s.footerContactSocialsItemIcon"
-                                hover-color="#4E68F2"
+                                hover-color="#5078DF"
                             />
                         </a>
                         <a
@@ -122,7 +122,7 @@ import pinterestIcon from '@/components/icons/pinterest-icon.vue'
                         >
                             <telegram-icon
                                 :class="s.footerContactSocialsItemIcon"
-                                hover-color="#4E68F2"
+                                hover-color="#5078DF"
                             />
                         </a>
                         <a
@@ -131,7 +131,7 @@ import pinterestIcon from '@/components/icons/pinterest-icon.vue'
                         >
                             <whatsapp-icon
                                 :class="s.footerContactSocialsItemIcon"
-                                hover-color="#4E68F2"
+                                hover-color="#5078DF"
                             />
                         </a>
                     </div>
@@ -343,7 +343,7 @@ import pinterestIcon from '@/components/icons/pinterest-icon.vue'
     height: 100%;
     &:hover {
         & path:first-child {
-            fill: #4e68f2;
+            fill: #5078DF;
         }
     }
 }
