@@ -56,7 +56,8 @@ const nextStepReady = computed(() => {
             :active="currentStepNum === stepsAmount"
             @click="configuratorStore.showOrderPopup"
         >
-            Перейти к оформлению
+            <span :class="s.navigationBtnLongText">Перейти к оформлению</span>
+            <span :class="s.navigationBtnShortText">Оформить</span>
         </primary-btn>
     </div>
 </template>
@@ -83,6 +84,7 @@ const nextStepReady = computed(() => {
 }
 .navigationBtnLongText {
     display: block;
+    white-space: nowrap;
 }
 .navigationBtnShortText {
     display: none;
@@ -99,7 +101,7 @@ const nextStepReady = computed(() => {
         display: block;
     }
 }
-@media (max-width: 400px) {
+@media (max-width: 465px) {
     .navigationBtnLongText {
         display: none;
     }
