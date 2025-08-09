@@ -367,10 +367,10 @@ const onPay = async () => {
                         Запомнить эти контакты в браузере для повторной покупки
                     </p>
                 </checkbox-button>
-                <order-popup-payment-type
-                    v-model="state.selectedTypeOfPayment"
-                    default-value="Банковской картой"
-                />
+<!--                <order-popup-payment-type-->
+<!--                    v-model="state.selectedTypeOfPayment"-->
+<!--                    default-value="Банковской картой"-->
+<!--                />-->
                 <p
                     v-if="!isFormDataCorrect && v$.$dirty"
                     :class="s.orderErrorMessage"
