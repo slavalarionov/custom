@@ -220,7 +220,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             const popupWindow = window.open()
             // Здесь вызовите ваш API, который вернёт ссылку на оплату через СБП
             // Например:
-            fetch('/api/spb-create', {
+            fetch('/spb-create', {
                 method: 'POST',
                 body: JSON.stringify(orderData),
                 headers: { 'Content-Type': 'application/json' }
