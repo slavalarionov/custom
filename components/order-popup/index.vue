@@ -184,10 +184,7 @@ const onPaySpb = async () => {
     if (isFormDataCorrect.value) {
         // Здесь можно повторно отправить данные, если нужно
         // и вызвать метод оплаты через СБП
-        configuratorStore.spbPay({
-            deliveryType: deliveryItem.value?.deliveryType || '',
-            deliveryPrice: deliveryItem.value?.deliveryPrice || 0
-        })
+        configuratorStore.spbPay()
     }
 }
 

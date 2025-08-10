@@ -208,14 +208,15 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
-        spbPay(deliveryOptions: { deliveryType: string; deliveryPrice: number }) {
+        spbPay() {
             // Пример: открытие ссылки на оплату через СБП
             const orderData = {
-                orderId: String(this.orderNumber),
-                phone: this.steps.final.phone,
-                email: this.steps.final.email,
-                name: this.steps.final.name,
-                amount: this.totalPriceWithDiscount,
+                amount: String(this.totalPriceWithDiscount),
+                purpose: `Заказ ремешка ${
+                    this.steps.strap.strapName ?? ''
+                } для модели ${this.steps.model.modelName ?? ''}`,
+                paymentMode: ['sbp', 'card', 'tinkoff'],
+                redirectUrl: 'https://slavalarionov.com/success'
             }
             const popupWindow = window.open()
             // Здесь вызовите ваш API, который вернёт ссылку на оплату через СБП
