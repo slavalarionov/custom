@@ -226,10 +226,11 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 body: JSON.stringify(orderData),
                 headers: { 'Content-Type': 'application/json' }
             })
-                .then(res => res.json())
-                .then(res => {
-                    if (popupWindow && res?.link) {
-                        popupWindow.location = res.link
+                .then((res) => res.json())
+                .then((data) => {
+                    const paymentLink = data?.Data?.paymentLink
+                    if (popupWindow && paymentLink) {
+                        popupWindow.location = paymentLink
                     } else if (popupWindow) {
                         popupWindow.location = 'https://slavalarionov.com/oh-no'
                     }
@@ -281,11 +282,11 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             this.additionalOption?.data.attributes.additional_options.forEach(
                 (option) => {
                     option.choosen &&
-                    orderItems.push({
-                        name: option.option_title,
-                        quantity: 1,
-                        price: Number(option.option_price)
-                    })
+                        orderItems.push({
+                            name: option.option_title,
+                            quantity: 1,
+                            price: Number(option.option_price)
+                        })
                 }
             )
             if (
@@ -423,10 +424,10 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 const target =
                     title !== ''
                         ? this.selectedWatchModelStraps.data.find(
-                        (item) =>
-                            item.attributes.watch_strap.strap_title ===
-                            title
-                    ) || this.selectedWatchModelStraps.data[0]
+                              (item) =>
+                                  item.attributes.watch_strap.strap_title ===
+                                  title
+                          ) || this.selectedWatchModelStraps.data[0]
                         : this.selectedWatchModelStraps.data[0]
                 target.choosen = true
                 if (!target.dataFetched) {
@@ -724,44 +725,44 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStrapModel?.attributes.watch_strap.view_1
-                    ?.main_image?.data?.attributes?.url || ''
+                          ?.main_image?.data?.attributes?.url || ''
                     : this.selectedStrapModel?.attributes.watch_strap.view_1
-                    .ultra_main_image.data.attributes.url || ''
+                          .ultra_main_image.data.attributes.url || ''
             )
             pushItem(this.selectedStrapFrameColorImages.view1)
             pushItem(
                 !this.isUltraModel
                     ? this.selectedLeatherColor?.view_1?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedLeatherColor?.ultra_view_1.data.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedEdgeColor?.view_1?.data?.attributes.url || ''
                     : this.selectedEdgeColor?.ultra_view_1?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedAdapterColor?.view_1?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedAdapterColor?.ultra_view_1?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedBuckleColor?.view_1?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedBuckleColor?.ultra_view_1?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStitchingColor?.view_1?.data?.attributes
-                    .url || ''
+                          .url || ''
                     : this.selectedStitchingColor?.ultra_view_1?.data
-                    ?.attributes.url || ''
+                          ?.attributes.url || ''
             )
             return arr
         },
@@ -779,43 +780,43 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStrapModel?.attributes.watch_strap.view_2
-                    ?.main_image?.data?.attributes?.url || ''
+                          ?.main_image?.data?.attributes?.url || ''
                     : this.selectedStrapModel?.attributes.watch_strap.view_2
-                    ?.ultra_main_image?.data?.attributes?.url || ''
+                          ?.ultra_main_image?.data?.attributes?.url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedLeatherColor?.view_2?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedLeatherColor?.ultra_view_2?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedEdgeColor?.view_2?.data?.attributes.url || ''
                     : this.selectedEdgeColor?.ultra_view_2?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedAdapterColor?.view_2?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedAdapterColor?.ultra_view_2?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedBuckleColor?.view_2?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedBuckleColor?.ultra_view_2?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStitchingColor?.view_2?.data?.attributes
-                    .url || ''
+                          .url || ''
                     : this.selectedStitchingColor?.ultra_view_2?.data
-                    ?.attributes.url || ''
+                          ?.attributes.url || ''
             )
             return arr
         },
@@ -833,44 +834,44 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStrapModel?.attributes.watch_strap.view_3
-                    ?.main_image?.data?.attributes?.url || ''
+                          ?.main_image?.data?.attributes?.url || ''
                     : this.selectedStrapModel?.attributes.watch_strap.view_3
-                    ?.ultra_main_image?.data?.attributes?.url || ''
+                          ?.ultra_main_image?.data?.attributes?.url || ''
             )
             pushItem(this.selectedStrapFrameColorImages.view2)
             pushItem(
                 !this.isUltraModel
                     ? this.selectedLeatherColor?.view_3?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedLeatherColor?.ultra_view_3?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedEdgeColor?.view_3?.data?.attributes.url || ''
                     : this.selectedEdgeColor?.ultra_view_3?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedAdapterColor?.view_3?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedAdapterColor?.ultra_view_3?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedBuckleColor?.view_3?.data?.attributes.url ||
-                    ''
+                          ''
                     : this.selectedBuckleColor?.ultra_view_3?.data?.attributes
-                    .url || ''
+                          .url || ''
             )
             pushItem(
                 !this.isUltraModel
                     ? this.selectedStitchingColor?.view_3?.data?.attributes
-                    .url || ''
+                          .url || ''
                     : this.selectedStitchingColor?.ultra_view_3?.data
-                    ?.attributes.url || ''
+                          ?.attributes.url || ''
             )
             return arr
         },
@@ -939,11 +940,11 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                     Number(
                         this.selectedStrapModel.attributes.watch_strap
                             .buckle_butterfly_choosen &&
-                        this.buckleButterfly?.data.attributes.buckle_price
+                            this.buckleButterfly?.data.attributes.buckle_price
                     ) || 0
                 return (
                     buckleButterflyPrice +
-                    this.selectedStrapModel?.attributes.watch_strap.price ||
+                        this.selectedStrapModel?.attributes.watch_strap.price ||
                     0
                 )
             }
@@ -957,8 +958,8 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 const discount =
                     this.usedPromo?.type === 'percent'
                         ? this.selectedStrapPrice *
-                        this.productAmount *
-                        (this.usedPromo.discountValue / 100)
+                          this.productAmount *
+                          (this.usedPromo.discountValue / 100)
                         : this.usedPromo?.discountValue || 0
                 return this.selectedStrapPrice - discount > 0
                     ? this.selectedStrapPrice - discount
