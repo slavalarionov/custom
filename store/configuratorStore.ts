@@ -211,7 +211,7 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
         spbPay(deliveryOptions: { deliveryType: string; deliveryPrice: number }) {
             // Пример: открытие ссылки на оплату через СБП
             const orderData = {
-                orderId: this.orderNumber,
+                orderId: String(this.orderNumber),
                 phone: this.steps.final.phone,
                 email: this.steps.final.email,
                 name: this.steps.final.name,
