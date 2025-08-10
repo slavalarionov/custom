@@ -178,6 +178,19 @@ function generateOrderNumber(length: number) {
     return res
 }
 
+const onPaySpb = async () => {
+    needValidate.value = true
+    await v$.value.$validate()
+    if (isFormDataCorrect.value) {
+        // Здесь можно повторно отправить данные, если нужно
+        // и вызвать метод оплаты через СБП
+        configuratorStore.spbPay({
+            deliveryType: deliveryItem.value?.deliveryType || '',
+            deliveryPrice: deliveryItem.value?.deliveryPrice || 0
+        })
+    }
+}
+
 const onPay = async () => {
     needValidate.value = true
     await v$.value.$validate()
@@ -415,6 +428,12 @@ const onPay = async () => {
                     @click="onPay"
                     >Оплатить заказ</primary-btn
                 >
+                <primary-btn
+                    :class="s.orderPayBtn"
+                    :active="true"
+                    style="margin-top: 12px"
+                    @click="onPaySpb"
+                >Оплатить через СБП</primary-btn>
                 <p :class="s.orderPolicy">
                     Нажимая на “Оплатить заказ”, вы соглашаетесь с
                     <a

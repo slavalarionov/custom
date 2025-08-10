@@ -208,6 +208,32 @@ export const useConfiguratorStore = defineStore('configuratorStore', {
                 }
             }
         },
+        spbPay(deliveryOptions: { deliveryType: string; deliveryPrice: number }) {
+            // Пример: открытие ссылки на оплату через СБП
+            const orderData = {
+                orderId: this.orderNumber,
+                phone: this.steps.final.phone,
+                email: this.steps.final.email,
+                name: this.steps.final.name,
+                amount: this.totalPriceWithDiscount,
+            }
+            const popupWindow = window.open()
+            // Здесь вызовите ваш API, который вернёт ссылку на оплату через СБП
+            // Например:
+            fetch('/api/spb-create', {
+                method: 'POST',
+                body: JSON.stringify(orderData),
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (popupWindow && res?.link) {
+                        popupWindow.location = res.link
+                    } else if (popupWindow) {
+                        popupWindow.location = 'https://slavalarionov.com/oh-no'
+                    }
+                })
+        },
         cardPay() {
             const widget = new cp.CloudPayments()
             widget.pay(
